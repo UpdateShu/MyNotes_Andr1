@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="list_horizontal_margin">10dp</dimen>
+    <dimen name="list_vertical_margin">5dp</dimen>
+    <dimen name="note_vertical_margin">5dp</dimen>
+    <dimen name="note_height">80dp</dimen>
+</resources>
