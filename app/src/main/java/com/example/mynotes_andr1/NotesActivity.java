@@ -6,9 +6,7 @@ import androidx.fragment.app.FragmentResultListener;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 
 import com.example.mynotes_andr1.domain.Note;
 import com.example.mynotes_andr1.ui.details.NoteDetailsActivity;
@@ -35,7 +33,7 @@ public class NotesActivity extends AppCompatActivity {
         }
 
         getSupportFragmentManager()
-                .setFragmentResultListener(NotesListFragment.RESULT_KEY, this, new FragmentResultListener() {
+                .setFragmentResultListener(NotesListFragment.KEY_RESULT, this, new FragmentResultListener() {
                     @Override
                     public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
                         selectedNote = result.getParcelable(NotesListFragment.ARG_NOTE);
@@ -65,8 +63,6 @@ public class NotesActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putParcelable(NoteDetailsFragment.ARG_NOTE, selectedNote);
         getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.details_container, NoteDetailsFragment.newInstance(selectedNote))
-                .commit();
+                .setFragmentResult(NoteDetailsFragment.KEY_RESULT, bundle);
     }
 }

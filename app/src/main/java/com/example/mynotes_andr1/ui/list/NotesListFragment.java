@@ -1,13 +1,11 @@
 package com.example.mynotes_andr1.ui.list;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,16 +13,13 @@ import androidx.fragment.app.Fragment;
 import com.example.mynotes_andr1.R;
 import com.example.mynotes_andr1.domain.InMemoryNotesRepository;
 import com.example.mynotes_andr1.domain.Note;
-import com.example.mynotes_andr1.ui.details.NoteDetailsActivity;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 public class NotesListFragment extends Fragment implements NotesListView {
 
     public static final String ARG_NOTE = "ARG_NOTE";
-    public static final String RESULT_KEY = "NotesListFragment_RESULT";
+    public static final String KEY_RESULT = "NotesListFragment_RESULT";
 
     private LinearLayout notesContainer;
 
@@ -63,7 +58,7 @@ public class NotesListFragment extends Fragment implements NotesListView {
 
                     Bundle data = new Bundle();
                     data.putParcelable(ARG_NOTE, note);
-                    getParentFragmentManager().setFragmentResult(RESULT_KEY, data);
+                    getParentFragmentManager().setFragmentResult(KEY_RESULT, data);
                     //Toast.makeText(requireContext(), note.getName(), Toast.LENGTH_LONG).show();
                 }
             });
