@@ -21,6 +21,7 @@
         android:id="@+id/details_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:name="com.example.mynotes_andr1.ui.details.NoteDetailsFragment"
         app:layout_constraintStart_toEndOf="@+id/fragment_container"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
