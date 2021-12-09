@@ -5,6 +5,27 @@ import java.util.Date;
 import java.util.List;
 
 public class InMemoryNotesRepository implements NotesRepository {
+
+    @Override
+    public List<NoteFolder> getAllFolders() {
+
+        ArrayList<NoteFolder> folders = new ArrayList<>();
+        folders.add(new NoteFolder("Раздел 1"));
+        folders.add(new NoteFolder("Раздел 2"));
+        folders.add(new NoteFolder("Раздел 3"));
+        return folders;
+    }
+
+    @Override
+    public void addFolder(NoteFolder folder) {
+
+    }
+
+    @Override
+    public void deleteFolder(NoteFolder folder) {
+
+    }
+
     @Override
     public List<Note> getAllNotes() {
 
