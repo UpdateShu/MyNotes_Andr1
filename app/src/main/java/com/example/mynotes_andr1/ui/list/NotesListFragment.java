@@ -19,6 +19,7 @@ import java.util.List;
 public class NotesListFragment extends Fragment implements NotesListView {
 
     public static final String ARG_NOTE = "ARG_NOTE";
+    public static final String TAG = "NotesListFragment";
     public static final String KEY_RESULT = "NotesListFragment_RESULT";
 
     private LinearLayout notesContainer;
@@ -35,7 +36,7 @@ public class NotesListFragment extends Fragment implements NotesListView {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_notes, container, false);
+        return inflater.inflate(R.layout.fragment_notes_list, container, false);
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.example.mynotes_andr1.domain.Note;
 import com.example.mynotes_andr1.ui.details.NoteDetailsActivity;
 import com.example.mynotes_andr1.ui.details.NoteDetailsFragment;
 import com.example.mynotes_andr1.ui.list.NotesListFragment;
+import com.example.mynotes_andr1.ui.folders.NoteFoldersFragment;
 
 public class NotesActivity extends AppCompatActivity {
 
@@ -38,16 +39,17 @@ public class NotesActivity extends AppCompatActivity {
                     public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
                         selectedNote = result.getParcelable(NotesListFragment.ARG_NOTE);
 
-                        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                            showDetails();
-                        }
-                        else {
-                            Intent intent = new Intent(NotesActivity.this, NoteDetailsActivity.class);
-                            intent.putExtra(NoteDetailsActivity.EXTRA_NOTE, selectedNote);
-                            startActivity(intent);
-                        }
-                    }
-                });
+                                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                                    showDetails();
+                                } else {
+                                    Intent intent = new Intent(NotesActivity.this, NoteDetailsActivity.class);
+                                    intent.putExtra(NoteDetailsActivity.EXTRA_NOTE, selectedNote);
+                                    startActivity(intent);
+                                }
+                            }
+                        });
+
+
     }
 
     @Override
@@ -57,6 +59,22 @@ public class NotesActivity extends AppCompatActivity {
         if (selectedNote != null) {
             outState.putParcelable(ARG_NOTE, selectedNote);
         }
+    }
+
+    public void showFolders() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new NoteFoldersFragment(), NoteFoldersFragment.TAG)
+                .commit();
+    }
+
+    public void confirmFolderSelection() {
+        showNoteList();
+    }
+
+    void showNoteList() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new NotesListFragment(), NotesListFragment.TAG)
+                .commit();
     }
 
     void showDetails() {

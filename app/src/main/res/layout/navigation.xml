@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingVertical="10dp">
+
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:id="@+id/text_search"
+    android:background="@color/white"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="100dp"
+    android:layout_gravity="top"
+    android:textSize="22sp"
+    android:text="Строка поиска"
+    android:hint="Search">
+</TextView>
+
+<Button
+    android:id="@+id/btn_search"
+    android:layout_width="wrap_content"
+    android:layout_height="40dp"
+    android:layout_gravity="top|end"
+    android:layout_marginEnd="5dp"
+    android:text="Поиск"
+    >
+</Button>
+
+    <TextView
+        android:id="@+id/directory_name"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="100dp"
+        android:background="@color/teal_200"
+        android:text="Имя раздела"
+        android:textSize="26sp"></TextView>
+
+    <Button
+        android:id="@+id/folder_select"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="5dp"
+        android:text="Выбрать">
+    </Button>
+</FrameLayout>
