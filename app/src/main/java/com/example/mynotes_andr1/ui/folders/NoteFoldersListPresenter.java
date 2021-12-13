@@ -5,12 +5,12 @@ import com.example.mynotes_andr1.domain.NotesRepository;
 
 import java.util.List;
 
-public class NoteFoldersPresenter {
+public class NoteFoldersListPresenter {
     private NoteFoldersListView view;
 
     private NotesRepository repository;
 
-    public NoteFoldersPresenter(NoteFoldersListView view, NotesRepository repository) {
+    public NoteFoldersListPresenter(NoteFoldersListView view, NotesRepository repository) {
         this.view = view;
         this.repository = repository;
     }

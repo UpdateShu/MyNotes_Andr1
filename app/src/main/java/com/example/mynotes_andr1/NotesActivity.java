@@ -3,6 +3,7 @@ package com.example.mynotes_andr1;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentResultListener;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -12,7 +13,7 @@ import com.example.mynotes_andr1.domain.Note;
 import com.example.mynotes_andr1.ui.details.NoteDetailsActivity;
 import com.example.mynotes_andr1.ui.details.NoteDetailsFragment;
 import com.example.mynotes_andr1.ui.list.NotesListFragment;
-import com.example.mynotes_andr1.ui.folders.NoteFoldersFragment;
+import com.example.mynotes_andr1.ui.folders.NoteFoldersListFragment;
 
 public class NotesActivity extends AppCompatActivity {
 
@@ -62,9 +63,12 @@ public class NotesActivity extends AppCompatActivity {
     }
 
     public void showFolders() {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new NoteFoldersFragment(), NoteFoldersFragment.TAG)
-                .commit();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new NoteFoldersListFragment(), NoteFoldersListFragment.TAG);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            transaction.replace(R.id.details_container, new NotesListFragment(), NotesListFragment.TAG);
+        }
+        transaction.commit();
     }
 
     public void confirmFolderSelection() {
@@ -72,9 +76,12 @@ public class NotesActivity extends AppCompatActivity {
     }
 
     void showNoteList() {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new NotesListFragment(), NotesListFragment.TAG)
-                .commit();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new NotesListFragment(), NotesListFragment.TAG);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            transaction.replace(R.id.details_container, new NoteDetailsFragment(), NoteDetailsFragment.TAG);
+        }
+        transaction.commit();
     }
 
     void showDetails() {

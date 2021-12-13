@@ -10,15 +10,15 @@
         android:id="@+id/fragment_search"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:name="com.example.mynotes_andr1.ui.navigation.NavigationFragment"
+        android:name="com.example.mynotes_andr1.ui.search.SearchFragment"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/details_container"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/fragment_container">
+        app:layout_constraintBottom_toTopOf="@+id/feature_container">
     </androidx.fragment.app.FragmentContainerView>
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_container"
+        android:id="@+id/feature_container"
         android:layout_width="300dp"
         android:layout_height="0dp"
         android:background="@android:color/holo_blue_dark"

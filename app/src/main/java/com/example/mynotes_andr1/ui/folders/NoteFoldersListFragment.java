@@ -15,32 +15,31 @@ import androidx.fragment.app.Fragment;
 import com.example.mynotes_andr1.NotesActivity;
 import com.example.mynotes_andr1.R;
 import com.example.mynotes_andr1.domain.InMemoryNotesRepository;
-import com.example.mynotes_andr1.domain.Note;
 import com.example.mynotes_andr1.domain.NoteFolder;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
-public class NoteFoldersFragment extends Fragment implements NoteFoldersListView {
+public class NoteFoldersListFragment extends Fragment implements NoteFoldersListView {
 
-    public static final String TAG = "NoteFoldersFragment";
+    public static final String ARG_FOLDER = "ARG_FOLDER";
+    public static final String TAG = "NoteFoldersListFragment";
+    public static final String KEY_RESULT = "NoteFoldersListFragment_RESULT";
 
     private LinearLayout foldersContainer;
 
-    private NoteFoldersPresenter presenter;
+    private NoteFoldersListPresenter presenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        presenter = new NoteFoldersPresenter(this, new InMemoryNotesRepository());
+        presenter = new NoteFoldersListPresenter(this, new InMemoryNotesRepository());
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_folders_list, foldersContainer, false);
+        return inflater.inflate(R.layout.fragment_folders_list, container, false);
     }
 
     @Override
@@ -67,7 +66,10 @@ public class NoteFoldersFragment extends Fragment implements NoteFoldersListView
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Bundle data = new Bundle();
+                    data.putParcelable(ARG_FOLDER, folder);
+                    getParentFragmentManager().setFragmentResult(KEY_RESULT, data);
+                    //Toast.makeText(requireContext(), note.getName(), Toast.LENGTH_LONG).show();
                 }
             });
             TextView folderName = itemView.findViewById(R.id.folder_name);
