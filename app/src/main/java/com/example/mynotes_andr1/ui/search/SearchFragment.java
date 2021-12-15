@@ -1,4 +1,4 @@
-package com.example.mynotes_andr1.ui.navigation;
+package com.example.mynotes_andr1.ui.search;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,12 +13,14 @@ import androidx.fragment.app.Fragment;
 import com.example.mynotes_andr1.NotesActivity;
 import com.example.mynotes_andr1.R;
 
-public class NavigationFragment extends Fragment {
+public class SearchFragment extends Fragment {
+
+    public static final String TAG = "SearchFragment";
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.navigation, container, false);
+        return inflater.inflate(R.layout.fragment_search, container, false);
     }
 
     @Override

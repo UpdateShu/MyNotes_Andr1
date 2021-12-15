@@ -17,6 +17,7 @@ public class NoteDetailsFragment extends Fragment {
 
     public static final String ARG_NOTE = "ARG_NOTE";
     public static final String KEY_RESULT = "NoteDetailsFragment_KEY_RESULT";
+    public static final String TAG = "NoteDetailsFragment";
 
     private TextView noteCreated;
     private TextView noteName;

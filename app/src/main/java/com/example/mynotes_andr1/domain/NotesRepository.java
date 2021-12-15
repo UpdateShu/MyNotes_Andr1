@@ -10,8 +10,6 @@ public interface NotesRepository {
 
     void deleteFolder(NoteFolder folder);
 
-    List<Note> getAllNotes();
-
     void addNote(Note note);
 
     void deleteNote(Note note);

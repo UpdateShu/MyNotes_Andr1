@@ -1,10 +1,15 @@
 package com.example.mynotes_andr1.ui.list;
 
+import android.os.Build;
 import android.widget.LinearLayout;
 
+import androidx.annotation.RequiresApi;
+
 import com.example.mynotes_andr1.domain.Note;
+import com.example.mynotes_andr1.domain.NoteFolder;
 import com.example.mynotes_andr1.domain.NotesRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NotesListPresenter {
@@ -18,9 +23,13 @@ public class NotesListPresenter {
         this.repository = repository;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void refresh() {
-        List<Note> result = repository.getAllNotes();
 
-        view.showNotes(result);
+        List<NoteFolder> folders = repository.getAllFolders();
+        long count = folders.stream().count();
+        if (count > 0) {
+            view.showFolderNotes(folders.get(0));
+        }
     }
 }
