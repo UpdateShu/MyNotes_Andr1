@@ -16,10 +16,11 @@ import com.example.mynotes_andr1.NotesActivity;
 import com.example.mynotes_andr1.R;
 import com.example.mynotes_andr1.domain.InMemoryNotesRepository;
 import com.example.mynotes_andr1.domain.NoteFolder;
+import com.example.mynotes_andr1.ui.list.NotesBaseListFragment;
 
 import java.util.List;
 
-public class NoteFoldersListFragment extends Fragment implements NoteFoldersListView {
+public class NoteFoldersListFragment extends NotesBaseListFragment implements NoteFoldersListView {
 
     public static final String ARG_FOLDER = "ARG_FOLDER";
     public static final String TAG = "NoteFoldersListFragment";
@@ -28,6 +29,11 @@ public class NoteFoldersListFragment extends Fragment implements NoteFoldersList
     private LinearLayout foldersContainer;
 
     private NoteFoldersListPresenter presenter;
+
+    @Override
+    public int getToolbarId() {
+        return R.id.toolbar;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,13 +54,13 @@ public class NoteFoldersListFragment extends Fragment implements NoteFoldersList
 
         foldersContainer = view.findViewById(R.id.folders_container);
 
-        Button folderSelect = view.findViewById(R.id.confirm_select);
+        /*Button folderSelect = view.findViewById(R.id.confirm_select);
         folderSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((NotesActivity)getActivity()).confirmFolderSelection();
             }
-        });
+        });*/
 
         presenter.refresh();
     }

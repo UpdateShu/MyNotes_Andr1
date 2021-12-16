@@ -6,19 +6,21 @@
         <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout-land/activity_nav_drawer.xml" value="0.12" />
         <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout-land/activity_notes.xml" value="0.136" />
         <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout/activity_nav_drawer.xml" value="0.25416666666666665" />
+        <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout/activity_nav_drawer.xml" value="0.21532846715328466" />
         <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout/activity_naw_drawer.xml" value="0.25416666666666665" />
         <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout/activity_note_details.xml" value="0.25" />
         <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout/activity_notes.xml" value="0.2" />
         <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout/activity_notes_list.xml" value="0.2" />
         <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout/add_folder.xml" value="0.25416666666666665" />
+        <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout/dialog_custom_title.xml" value="0.19635416666666666" />
+        <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout/dialog_custom_view.xml" value="0.1" />
         <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout/fff.xml" value="0.25" />
         <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout/fragment_directory_details.xml" value="0.18020833333333333" />
         <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout/fragment_directory_list.xml" value="0.264" />
         <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout/fragment_example.xml" value="0.25" />
-        <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout/fragment_folders_list.xml" value="0.203125" />
+        <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout/fragment_folders_list.xml" value="0.152" />
         <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout/fragment_list_notes.xml" value="0.19010416666666666" />
-        <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout/fragment_note_details.xml" value="0.25" />
+        <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout/fragment_note_details.xml" value="0.21851851851851853" />
         <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout/fragment_notes.xml" value="0.264" />
         <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout/fragment_notes2.xml" value="0.21354166666666666" />
         <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout/fragment_notes_list.xml" value="0.2" />
@@ -29,6 +31,8 @@
         <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout/navigation.xml" value="0.264" />
         <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/layout/search_note.xml" value="0.25416666666666665" />
         <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/menu/menu_nav_drawer.xml" value="0.22552083333333334" />
+        <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/menu/menu_note_editor.xml" value="0.21041666666666667" />
+        <entry key="..\:/My job/GeekBrains/Android/Projects/MyNotes_Andr1/app/src/main/res/menu/menu_notes_list.xml" value="0.21041666666666667" />
       </map>
     </option>
   </component>

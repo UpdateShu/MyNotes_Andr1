@@ -6,4 +6,10 @@
     <string name="title_folders">Все разделы</string>
     <string name="title_notes">Заметки</string>
     <string name="title_settings">Настройки</string>
+    <string name="nav_app_bar_open_drawer_description">Открыть</string>
+    <string name="nav_app_bar_close_drawer_description">Закрыть</string>
+    <string name="add_note">Добавить заметку</string>
+    <string name="delete_note">Удалить заметку</string>
+    <string name="add_new_note">Новая заметка</string>
+    <string name="negative_button">Нет</string>
 </resources>
