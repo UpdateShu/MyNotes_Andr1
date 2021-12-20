@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi;
 import com.example.mynotes_andr1.domain.Note;
 import com.example.mynotes_andr1.domain.NoteFolder;
 import com.example.mynotes_andr1.domain.NotesRepository;
+import com.example.mynotes_andr1.ui.navdrawer.BaseAlertDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,18 +19,42 @@ public class NotesListPresenter {
 
     private NotesRepository repository;
 
+    private NoteFolder folder;
+    private Note selectedNote = null;
+
     public NotesListPresenter(NotesListView view, NotesRepository repository) {
         this.view = view;
         this.repository = repository;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void refresh() {
-
+    public NoteFolder getCurrentFolder() {
         List<NoteFolder> folders = repository.getAllFolders();
-        long count = folders.stream().count();
-        if (count > 0) {
-            view.showFolderNotes(folders.get(0));
+        if (folders.stream().count() != 0) {
+            return folders.get(0);
+        }
+        return null;
+    }
+
+    public void showFolder(NoteFolder folder) {
+
+        this.folder = folder;
+        repository.loadNoteFolder(folder);
+
+        view.showFolderNotes(folder);
+    }
+
+    public void setSelectedNote(Note note) {
+        selectedNote = note;
+    }
+
+    public void addNote() {
+        view.addNote();
+    }
+
+    public void deleteNote() {
+        if (selectedNote != null) {
+            view.deleteNote(selectedNote);
         }
     }
 }

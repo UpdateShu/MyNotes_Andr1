@@ -5,7 +5,6 @@
         android:id="@+id/action_search"
         android:title="@string/title_search">
     </item>
-
     <item
         android:id="@+id/action_folders"
         android:title="@string/title_folders">

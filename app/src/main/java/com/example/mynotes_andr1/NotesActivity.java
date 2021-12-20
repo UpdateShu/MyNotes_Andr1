@@ -12,6 +12,7 @@ import android.os.Bundle;
 import com.example.mynotes_andr1.domain.Note;
 import com.example.mynotes_andr1.ui.details.NoteDetailsActivity;
 import com.example.mynotes_andr1.ui.details.NoteDetailsFragment;
+import com.example.mynotes_andr1.ui.list.NotesDetailsListFragment;
 import com.example.mynotes_andr1.ui.list.NotesListFragment;
 import com.example.mynotes_andr1.ui.folders.NoteFoldersListFragment;
 
@@ -66,7 +67,7 @@ public class NotesActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, new NoteFoldersListFragment(), NoteFoldersListFragment.TAG);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            transaction.replace(R.id.details_container, new NotesListFragment(), NotesListFragment.TAG);
+            transaction.replace(R.id.details_container, new NotesDetailsListFragment(), NotesDetailsListFragment.TAG);
         }
         transaction.commit();
     }

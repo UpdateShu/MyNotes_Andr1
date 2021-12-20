@@ -29,7 +29,7 @@ public class NotesListActivity extends AppCompatActivity {
 
                 FragmentManager fm = getSupportFragmentManager();
                 fm.beginTransaction()
-                        .replace(R.id.note_list_container, NotesListFragment.newInstance(folder))
+                        .replace(R.id.notes_list_container, NotesDetailsListFragment.newInstance(folder))
                         .commit();
             }
         }
