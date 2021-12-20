@@ -3,34 +3,28 @@ package com.example.mynotes_andr1.ui.list;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
 
 import com.example.mynotes_andr1.R;
 import com.example.mynotes_andr1.domain.InMemoryNotesRepository;
 import com.example.mynotes_andr1.domain.Note;
 import com.example.mynotes_andr1.domain.NoteFolder;
-import com.example.mynotes_andr1.ui.folders.NoteFoldersListFragment;
+import com.example.mynotes_andr1.ui.folders.NoteFoldersFragment;
 
-import java.util.List;
-
-public class NotesDetailsListFragment extends NotesBaseListFragment implements NotesListView {
+public class NotesInfoFragment extends NoteListFragment implements NotesListView {
 
     public static final String ARG_FOLDER = "ARG_FOLDER";
-    public static final String TAG = "NotesDetailsListFragment";
-    public static final String KEY_RESULT = "NotesDetailsListFragment_RESULT";
+    public static final String TAG = "NotesDetailsFragment";
+    public static final String KEY_RESULT = "NotesDetailsFragment_RESULT";
 
-    public static NotesDetailsListFragment newInstance(NoteFolder folder) {
-        NotesDetailsListFragment fragment = new NotesDetailsListFragment();
+    public static NotesInfoFragment newInstance(NoteFolder folder) {
+        NotesInfoFragment fragment = new NotesInfoFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_FOLDER, folder);
         fragment.setArguments(args);
@@ -41,7 +35,7 @@ public class NotesDetailsListFragment extends NotesBaseListFragment implements N
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        presenter = new NotesListPresenter(this, new InMemoryNotesRepository());
+        presenter = new NotesPresenter(this, new InMemoryNotesRepository());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -62,7 +56,7 @@ public class NotesDetailsListFragment extends NotesBaseListFragment implements N
                     .setFragmentResultListener(KEY_RESULT, getViewLifecycleOwner(), new FragmentResultListener() {
                         @Override
                         public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                            NoteFolder folder = result.getParcelable(NoteFoldersListFragment.ARG_FOLDER);
+                            NoteFolder folder = result.getParcelable(NoteFoldersFragment.ARG_FOLDER);
                             presenter.showFolder(folder);
                         }
                     });
@@ -72,12 +66,8 @@ public class NotesDetailsListFragment extends NotesBaseListFragment implements N
     @Override
     public void showFolderNotes(NoteFolder folder) {
 
-        notesContainer.removeAllViews();
-        List<Note> notes = folder.getNotes();
-        for (Note note: notes) {
-            View itemView = createView(note);
-            notesContainer.addView(itemView);
-        }
+        adapter.setData(folder.getNotes());
+        adapter.notifyDataSetChanged();
     }
 
     @Override

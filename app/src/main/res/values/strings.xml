@@ -12,4 +12,8 @@
     <string name="delete_note">Удалить заметку</string>
     <string name="add_new_note">Новая заметка</string>
     <string name="negative_button">Нет</string>
+    <string name="title_exit">Выйти</string>
+    <string name="exit_dialog_title">Подтверждение выхода</string>
+    <string name="exit_dialog_message">Выйти из приложения?</string>
+    <string name="exit_dialog_button">Выход</string>
 </resources>

@@ -12,9 +12,9 @@ import android.os.Bundle;
 import com.example.mynotes_andr1.domain.Note;
 import com.example.mynotes_andr1.ui.details.NoteDetailsActivity;
 import com.example.mynotes_andr1.ui.details.NoteDetailsFragment;
-import com.example.mynotes_andr1.ui.list.NotesDetailsListFragment;
-import com.example.mynotes_andr1.ui.list.NotesListFragment;
-import com.example.mynotes_andr1.ui.folders.NoteFoldersListFragment;
+import com.example.mynotes_andr1.ui.list.NotesInfoFragment;
+import com.example.mynotes_andr1.ui.list.NotesEditFragment;
+import com.example.mynotes_andr1.ui.folders.NoteFoldersFragment;
 
 public class NotesActivity extends AppCompatActivity {
 
@@ -36,10 +36,10 @@ public class NotesActivity extends AppCompatActivity {
         }
 
         getSupportFragmentManager()
-                .setFragmentResultListener(NotesListFragment.KEY_RESULT, this, new FragmentResultListener() {
+                .setFragmentResultListener(NotesEditFragment.KEY_RESULT, this, new FragmentResultListener() {
                     @Override
                     public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                        selectedNote = result.getParcelable(NotesListFragment.ARG_NOTE);
+                        selectedNote = result.getParcelable(NotesEditFragment.ARG_NOTE);
 
                                 if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                                     showDetails();
@@ -65,9 +65,9 @@ public class NotesActivity extends AppCompatActivity {
 
     public void showFolders() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new NoteFoldersListFragment(), NoteFoldersListFragment.TAG);
+                .replace(R.id.fragment_container, new NoteFoldersFragment(), NoteFoldersFragment.TAG);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            transaction.replace(R.id.details_container, new NotesDetailsListFragment(), NotesDetailsListFragment.TAG);
+            transaction.replace(R.id.details_container, new NotesInfoFragment(), NotesInfoFragment.TAG);
         }
         transaction.commit();
     }
@@ -78,7 +78,7 @@ public class NotesActivity extends AppCompatActivity {
 
     void showNoteList() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new NotesListFragment(), NotesListFragment.TAG);
+                .replace(R.id.fragment_container, new NotesEditFragment(), NotesEditFragment.TAG);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             transaction.replace(R.id.details_container, new NoteDetailsFragment(), NoteDetailsFragment.TAG);
         }

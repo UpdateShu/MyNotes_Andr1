@@ -14,10 +14,6 @@ import com.example.mynotes_andr1.R;
 
 public class BaseAlertDialogFragment extends DialogFragment {
 
-    public static final String TAG = "BaseAlertDialogFragment";
-    public static final String KEY_RESULT = "BaseAlertDialogFragment_Result";
-    public static final String ARG_BUTTON = "ARG_BUTTON";
-
     interface
     ClickListener {
         void onPositiveClicked();
@@ -25,19 +21,12 @@ public class BaseAlertDialogFragment extends DialogFragment {
         void onNegativeClicked();
     }
 
-    private static final String ARG_TITLE = "ARG_TITLE";
-    private static final String ARG_MESSAGE = "ARG_MESSAGE";
-    private static final String ARG_POSITIVE_BUTTON = "ARG_POSITIVE_BUTTON";
+    public static String KEY_RESULT = "BaseAlertDialogFragment_KEY_RESULT";
+    public static String ARG_BUTTON = "ARG_BUTTON";
 
-    public static BaseAlertDialogFragment newInstance(String title, String message, String okText) {
-        BaseAlertDialogFragment dialogFragment = new BaseAlertDialogFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(ARG_TITLE, title);
-        bundle.putString(ARG_MESSAGE, message);
-        bundle.putString(ARG_POSITIVE_BUTTON, okText);
-        dialogFragment.setArguments(bundle);
-        return dialogFragment;
-    }
+    protected static String ARG_TITLE = "ARG_TITLE";
+    protected static String ARG_MESSAGE = "ARG_MESSAGE";
+    protected static String ARG_POSITIVE_BUTTON = "ARG_POSITIVE_BUTTON";
 
     @NonNull
     @Override

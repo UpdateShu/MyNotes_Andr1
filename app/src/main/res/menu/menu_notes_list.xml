@@ -15,10 +15,4 @@
         app:showAsAction="never">
     </item>
 
-    <item
-        android:id="@+id/action_exit"
-        android:title="Выйти"
-        app:showAsAction="never">
-        </item>
-
 </menu>
