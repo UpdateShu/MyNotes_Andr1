@@ -5,18 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
 
 import com.example.mynotes_andr1.R;
 import com.example.mynotes_andr1.domain.Note;
-import com.example.mynotes_andr1.domain.NoteFolder;
-import com.example.mynotes_andr1.ui.list.NotesListFragment;
-import com.example.mynotes_andr1.ui.list.NotesListView;
+import com.example.mynotes_andr1.ui.list.NotesEditFragment;
 import com.example.mynotes_andr1.ui.navdrawer.BaseNavFeatureFragment;
 
 public class NoteDetailsFragment extends BaseNavFeatureFragment implements NoteDetailsView {
@@ -28,7 +24,6 @@ public class NoteDetailsFragment extends BaseNavFeatureFragment implements NoteD
     private TextView noteCreated;
     private TextView noteName;
     private TextView noteDescription;
-    private Toolbar toolbar;
 
     private NoteDetailsPresenter presenter;
     private Note note;
@@ -66,27 +61,25 @@ public class NoteDetailsFragment extends BaseNavFeatureFragment implements NoteD
         noteCreated = view.findViewById(R.id.note_created);
         noteName = view.findViewById(R.id.note_name);
         noteDescription = view.findViewById(R.id.note_description);
-        toolbar = view.findViewById(getToolbarId());//вылетает null
 
-        /*if (getArguments() != null && getArguments().containsKey(ARG_NOTE)) {
+        if (getArguments() != null && getArguments().containsKey(ARG_NOTE)) {
             presenter.showNote(requireArguments().getParcelable(ARG_NOTE));
         }
         getParentFragmentManager()
                 .setFragmentResultListener(KEY_RESULT, getViewLifecycleOwner(), new FragmentResultListener() {
                     @Override
                     public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                        presenter.showNote(result.getParcelable(NotesListFragment.ARG_NOTE));
+                        presenter.showNote(result.getParcelable(NotesEditFragment.ARG_NOTE));
                     }
-                });*/
+                });
     }
 
     @Override
     public void showNote(Note note) {
-        if (note != null) {
-            toolbar.setTitle(note.getName());
-        }
-        noteCreated.setText(note.getFormattedDateOfCreated());
-        noteName.setText(note.getName());
-        noteDescription.setText(note.getDescription());
+
+        toolbar.setTitle(note != null ? note.getName() : "Новая заметка");
+        noteCreated.setText(note != null ? note.getFormattedDateOfCreated() : "");
+        noteName.setText(note != null ? note.getName() : "");
+        noteDescription.setText(note != null ? note.getDescription() : "");
     }
 }

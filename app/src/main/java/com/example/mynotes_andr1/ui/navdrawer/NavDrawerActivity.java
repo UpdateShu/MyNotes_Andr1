@@ -1,32 +1,27 @@
 package com.example.mynotes_andr1.ui.navdrawer;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.mynotes_andr1.R;
 import com.example.mynotes_andr1.domain.Note;
 import com.example.mynotes_andr1.domain.NoteFolder;
-import com.example.mynotes_andr1.ui.details.NoteDetailsActivity;
 import com.example.mynotes_andr1.ui.details.NoteDetailsFragment;
-import com.example.mynotes_andr1.ui.folders.NoteFoldersListFragment;
-import com.example.mynotes_andr1.ui.list.NotesDetailsListFragment;
-import com.example.mynotes_andr1.ui.list.NotesListActivity;
-import com.example.mynotes_andr1.ui.list.NotesListFragment;
+import com.example.mynotes_andr1.ui.folders.NoteFoldersFragment;
+import com.example.mynotes_andr1.ui.list.NotesInfoFragment;
+import com.example.mynotes_andr1.ui.list.NotesEditFragment;
 import com.example.mynotes_andr1.ui.search.SearchFragment;
 import com.example.mynotes_andr1.ui.settings.SettingsFragment;
 import com.google.android.material.navigation.NavigationView;
@@ -70,37 +65,54 @@ public class NavDrawerActivity extends AppCompatActivity implements NavDrawerHos
                         showSettings();
                         drawer.closeDrawer(GravityCompat.START);
                         return true;
+
+                    case R.id.action_exit:
+                        ExitDialogFragment.newInstance().show(getSupportFragmentManager(), ExitDialogFragment.TAG);
                 }
                 return false;
             }
         });
 
         getSupportFragmentManager()
-                .setFragmentResultListener(NoteFoldersListFragment.KEY_RESULT, this, new FragmentResultListener() {
+                .setFragmentResultListener(NoteFoldersFragment.KEY_RESULT, this, new FragmentResultListener() {
                     @Override
                     public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                        selectedFolder = result.getParcelable(NoteFoldersListFragment.ARG_FOLDER);
+                        selectedFolder = result.getParcelable(NoteFoldersFragment.ARG_FOLDER);
 
                         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                             showFoldersDetails();
                         } else {
-                            Intent intent = new Intent(NavDrawerActivity.this, NotesListActivity.class);
-                            intent.putExtra(NotesListActivity.EXTRA_FOLDER, selectedFolder);
-                            startActivity(intent);
+                            //Intent intent = new Intent(NavDrawerActivity.this, NotesListActivity.class);
+                            //intent.putExtra(NotesListActivity.EXTRA_FOLDER, selectedFolder);
+                            //startActivity(intent);
                         }
                     }
                 });
 
         getSupportFragmentManager()
-                .setFragmentResultListener(NotesListFragment.KEY_RESULT, this, new FragmentResultListener() {
+                .setFragmentResultListener(NotesEditFragment.KEY_RESULT, this, new FragmentResultListener() {
                     @Override
                     public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                        selectedNote = result.getParcelable(NotesListFragment.ARG_NOTE);
-                        //showNote(result.getParcelable(NotesListFragment.ARG_NOTE));
+                        selectedNote = result.getParcelable(NotesEditFragment.ARG_NOTE);
+                        showNote(selectedNote);
                     }
                 });
 
-        ActionBar actionBar = getSupportActionBar();
+        getSupportFragmentManager()
+                .setFragmentResultListener(ExitDialogFragment.EXIT_RESULT, this,
+                        new FragmentResultListener() {
+                            @Override
+                            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                                switch (result.getInt(ExitDialogFragment.EXIT_BUTTON)) {
+                                    case DialogInterface.BUTTON_POSITIVE:
+                                        System.exit(0);
+                                        break;
+                                    case DialogInterface.BUTTON_NEGATIVE:
+                                        break;
+                                }
+                            }
+                        });
+
     }
 
     @Override
@@ -126,7 +138,7 @@ public class NavDrawerActivity extends AppCompatActivity implements NavDrawerHos
 
     void showNoteList() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
-                .replace(R.id.feature_container, new  NotesListFragment(), NotesListFragment.TAG);
+                .replace(R.id.feature_container, new NotesEditFragment(), NotesEditFragment.TAG);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             transaction.replace(R.id.details_container, new NoteDetailsFragment(), NoteDetailsFragment.TAG);
         }
@@ -135,32 +147,36 @@ public class NavDrawerActivity extends AppCompatActivity implements NavDrawerHos
 
     @Override
     public void showNote(Note note) {
-        if (note != null) {
-            selectedNote = note;
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(NoteDetailsFragment.ARG_NOTE, selectedNote);
-            getSupportFragmentManager()
-                    .setFragmentResult(NoteDetailsFragment.KEY_RESULT, bundle);
+        selectedNote = note;
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(NoteDetailsFragment.ARG_NOTE, selectedNote);
+        getSupportFragmentManager()
+            .setFragmentResult(NoteDetailsFragment.KEY_RESULT, bundle);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
         }
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.feature_container, new NoteDetailsFragment(), NoteDetailsFragment.TAG)
-                .commit();
+        else {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.feature_container, new NoteDetailsFragment(), NoteDetailsFragment.TAG)
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 
     void showFoldersList() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
-                .replace(R.id.feature_container, new NoteFoldersListFragment(), NoteFoldersListFragment.TAG);
+                .replace(R.id.feature_container, new NoteFoldersFragment(), NoteFoldersFragment.TAG);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            transaction.replace(R.id.details_container, new NotesDetailsListFragment(), NotesDetailsListFragment.TAG);
+            transaction.replace(R.id.details_container, new NotesInfoFragment(), NotesInfoFragment.TAG);
         }
         transaction.commit();
     }
 
     void showFoldersDetails() {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(NotesDetailsListFragment.ARG_FOLDER, selectedFolder);
+        bundle.putParcelable(NotesInfoFragment.ARG_FOLDER, selectedFolder);
         getSupportFragmentManager()
-                .setFragmentResult(NotesDetailsListFragment.KEY_RESULT, bundle);
+                .setFragmentResult(NotesInfoFragment.KEY_RESULT, bundle);
     }
 
     void showSettings() {

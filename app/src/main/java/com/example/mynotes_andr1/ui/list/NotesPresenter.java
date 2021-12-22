@@ -13,7 +13,7 @@ import com.example.mynotes_andr1.ui.navdrawer.BaseAlertDialogFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NotesListPresenter {
+public class NotesPresenter {
 
     private NotesListView view;
 
@@ -22,7 +22,7 @@ public class NotesListPresenter {
     private NoteFolder folder;
     private Note selectedNote = null;
 
-    public NotesListPresenter(NotesListView view, NotesRepository repository) {
+    public NotesPresenter(NotesListView view, NotesRepository repository) {
         this.view = view;
         this.repository = repository;
     }

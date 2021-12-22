@@ -22,7 +22,7 @@
         android:layout_width="300dp"
         android:layout_height="0dp"
         android:background="@android:color/holo_blue_dark"
-        android:name="com.example.mynotes_andr1.ui.list.NotesListFragment"
+        android:name="com.example.mynotes_andr1.ui.list.NotesEditFragment"
         android:text="Hello World!"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_search"

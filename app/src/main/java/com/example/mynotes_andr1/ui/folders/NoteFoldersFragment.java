@@ -4,23 +4,20 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
-import com.example.mynotes_andr1.NotesActivity;
 import com.example.mynotes_andr1.R;
 import com.example.mynotes_andr1.domain.InMemoryNotesRepository;
 import com.example.mynotes_andr1.domain.NoteFolder;
-import com.example.mynotes_andr1.ui.list.NotesBaseListFragment;
+import com.example.mynotes_andr1.ui.list.NoteListFragment;
 
 import java.util.List;
 
-public class NoteFoldersListFragment extends NotesBaseListFragment implements NoteFoldersListView {
+public class NoteFoldersFragment extends NoteListFragment implements NoteFoldersListView {
 
     public static final String ARG_FOLDER = "ARG_FOLDER";
     public static final String TAG = "NoteFoldersListFragment";

@@ -1,54 +1,58 @@
 package com.example.mynotes_andr1.ui.list;
 
 import android.content.DialogInterface;
-import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
 
 import com.example.mynotes_andr1.R;
 import com.example.mynotes_andr1.domain.InMemoryNotesRepository;
 import com.example.mynotes_andr1.domain.Note;
 import com.example.mynotes_andr1.domain.NoteFolder;
-import com.example.mynotes_andr1.ui.details.NoteDetailsFragment;
-import com.example.mynotes_andr1.ui.folders.NoteFoldersListFragment;
 import com.example.mynotes_andr1.ui.navdrawer.BaseAlertDialogFragment;
 import com.example.mynotes_andr1.ui.navdrawer.NavDrawerHost;
 
-import java.util.List;
-
-public class NotesListFragment extends NotesBaseListFragment implements NotesListView {
+public class NotesEditFragment extends NoteListFragment implements NotesListView {
 
     public static final String ARG_NOTE = "ARG_NOTE";
-    public static final String TAG = "NotesListFragment";
-    public static final String KEY_RESULT = "NotesListFragment_RESULT";
+    public static final String TAG = "NotesEditFragment";
+    public static final String KEY_RESULT = "NotesEditFragment_RESULT";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        presenter = new NotesListPresenter(this, new InMemoryNotesRepository());
+        presenter = new NotesPresenter(this, new InMemoryNotesRepository());
+        adapter = new NotesAdapter();
+        adapter.setOnClick(new NotesAdapter.OnClick() {
+            @Override
+            public void onClick(Note note) {
+                Bundle data = new Bundle();
+                data.putParcelable(ARG_NOTE, note);
+                getParentFragmentManager().setFragmentResult(KEY_RESULT, data);
+                //Toast.makeText(requireContext(), note.getName(), Toast.LENGTH_LONG).show();
+                presenter.setSelectedNote(note);
+            }
+
+            @Override
+            public void onLongClick(Note note) {
+
+            }
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        notesContainer = view.findViewById(R.id.notes_container);
 
         NoteFolder folder = presenter.getCurrentFolder();
         if (folder != null) {
@@ -70,11 +74,11 @@ public class NotesListFragment extends NotesBaseListFragment implements NotesLis
             });
             toolbar.setTitle(folder.getName());
         }
-        getParentFragmentManager().setFragmentResultListener(BaseAlertDialogFragment.KEY_RESULT, requireActivity(),
+        /*getParentFragmentManager().setFragmentResultListener(NoteListDialogFragment.NOTES_KEY_RESULT, requireActivity(),
                 new FragmentResultListener() {
                     @Override
                     public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                        switch (result.getInt(BaseAlertDialogFragment.ARG_BUTTON)) {
+                        switch (result.getInt(NoteListDialogFragment.ARG_BUTTON)) {
                             case DialogInterface.BUTTON_POSITIVE:
                                 Toast.makeText(requireActivity(), "Удалено!", Toast.LENGTH_SHORT).show();
                                 break;
@@ -82,27 +86,14 @@ public class NotesListFragment extends NotesBaseListFragment implements NotesLis
                                 break;
                         }
                     }
-                });
+                });*/
     }
 
     @Override
     public void showFolderNotes(NoteFolder folder) {
-        List<Note> notes = folder.getNotes();
-        for (Note note: notes) {
-            View itemView = createView(note);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-                    Bundle data = new Bundle();
-                    data.putParcelable(ARG_NOTE, note);
-                    getParentFragmentManager().setFragmentResult(KEY_RESULT, data);
-                    //Toast.makeText(requireContext(), note.getName(), Toast.LENGTH_LONG).show();
-                    presenter.setSelectedNote(note);
-                }
-            });
-            notesContainer.addView(itemView);
-        }
+        adapter.setData(folder.getNotes());
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -115,7 +106,7 @@ public class NotesListFragment extends NotesBaseListFragment implements NotesLis
 
     @Override
     public void deleteNote(Note note) {
-        BaseAlertDialogFragment.newInstance("Подтверждение удаления", "Удалить заметку " + note.getName() +"?", "Удалить")
-                .show(getParentFragmentManager(), BaseAlertDialogFragment.TAG);
+        //NoteListDialogFragment.newRemovingDialog(note)
+         //       .show(getParentFragmentManager(), NoteListDialogFragment.NOTES_TAG);
     }
 }
