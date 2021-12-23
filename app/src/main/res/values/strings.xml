@@ -10,10 +10,22 @@
     <string name="nav_app_bar_close_drawer_description">Закрыть</string>
     <string name="add_note">Добавить заметку</string>
     <string name="delete_note">Удалить заметку</string>
+    <string name="delete_folder">Удалить раздел</string>
     <string name="add_new_note">Новая заметка</string>
     <string name="negative_button">Нет</string>
-    <string name="title_exit">Выйти</string>
+    <string name="try_again_please">Please, try again</string>
+    <string name="retry">Retry</string>
     <string name="exit_dialog_title">Подтверждение выхода</string>
     <string name="exit_dialog_message">Выйти из приложения?</string>
-    <string name="exit_dialog_button">Выход</string>
+    <string name="exit_dialog_action">Выход</string>
+    <string name="delete_dialog_title">Подтверждение удаления</string>
+    <string name="delete_dialog_ok">Удалить</string>
+    <string name="empty">I\'m empty</string>
+    <string name="hint_note_name">Название заметки</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_update">Update</string>
+    <string name="update_title">Редактирование заметки</string>
+    <string name="add_title">Сохранение заметки</string>
+    <string name="update_action">Обновить</string>
+    <string name="delete_action">Удалить</string>
 </resources>

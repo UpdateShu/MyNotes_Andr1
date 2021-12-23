@@ -9,15 +9,16 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.example.mynotes_andr1.R;
 import com.example.mynotes_andr1.domain.InMemoryNotesRepository;
 import com.example.mynotes_andr1.domain.NoteFolder;
-import com.example.mynotes_andr1.ui.list.NoteListFragment;
+import com.example.mynotes_andr1.ui.navdrawer.BaseNavFeatureFragment;
 
 import java.util.List;
 
-public class NoteFoldersFragment extends NoteListFragment implements NoteFoldersListView {
+public class NoteFoldersFragment extends BaseNavFeatureFragment implements NoteFoldersListView {
 
     public static final String ARG_FOLDER = "ARG_FOLDER";
     public static final String TAG = "NoteFoldersListFragment";
@@ -83,5 +84,10 @@ public class NoteFoldersFragment extends NoteListFragment implements NoteFolders
 
         View addFolderView = LayoutInflater.from(requireContext()).inflate(R.layout.add_folder, foldersContainer, false);
         foldersContainer.addView(addFolderView);
+    }
+
+    @Override
+    public void showError(String error) {
+
     }
 }

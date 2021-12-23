@@ -12,21 +12,24 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.mynotes_andr1.R;
 
-public class BaseAlertDialogFragment extends DialogFragment {
+public abstract class BaseAlertDialogFragment extends DialogFragment {
 
-    interface
-    ClickListener {
-        void onPositiveClicked();
+    public static final String ARG_BUTTON = "ARG_BUTTON";
 
-        void onNegativeClicked();
+    public abstract String getDialogTag();
+    public abstract String getKeyResult();
+
+    private static String ARG_TITLE = "ARG_TITLE";
+    private static String ARG_MESSAGE = "ARG_MESSAGE";
+    private static String ARG_POSITIVE_BUTTON = "ARG_POSITIVE_BUTTON";
+
+    protected static void setArguments(DialogFragment fragment, String title, String message, String okTitle) {
+        Bundle bundle = new Bundle();
+        bundle.putString(ARG_TITLE, title);
+        bundle.putString(ARG_MESSAGE, message);
+        bundle.putString(ARG_POSITIVE_BUTTON, okTitle);
+        fragment.setArguments(bundle);
     }
-
-    public static String KEY_RESULT = "BaseAlertDialogFragment_KEY_RESULT";
-    public static String ARG_BUTTON = "ARG_BUTTON";
-
-    protected static String ARG_TITLE = "ARG_TITLE";
-    protected static String ARG_MESSAGE = "ARG_MESSAGE";
-    protected static String ARG_POSITIVE_BUTTON = "ARG_POSITIVE_BUTTON";
 
     @NonNull
     @Override
@@ -39,7 +42,7 @@ public class BaseAlertDialogFragment extends DialogFragment {
                 bundle.putInt(ARG_BUTTON, which);
 
                 getParentFragmentManager()
-                        .setFragmentResult(KEY_RESULT, bundle);
+                        .setFragmentResult(getKeyResult(), bundle);
             }
         };
 

@@ -12,19 +12,23 @@ import java.util.Locale;
 
 public class Note implements Parcelable {
 
+    private String id;
+
     private String name;
 
     private String description;
 
     private Date created;
 
-    public Note(String name, String description, Date created) {
+    public Note(String id, String name, String description, Date created) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.created = created;
     }
 
     protected Note(Parcel in) {
+        id = in.readString();
         name = in.readString();
         description = in.readString();
         created = new Date();
@@ -48,6 +52,8 @@ public class Note implements Parcelable {
         }
     };
 
+    public String getId() { return id; }
+
     public String getName() {
         return name;
     }
@@ -69,6 +75,10 @@ public class Note implements Parcelable {
         return "\t" + Locale.getDefault() + ":\t" + new SimpleDateFormat().format(created);
     }
 
+    public Date getCreated() {
+        return created;
+    }
+
     public void setCreated(Date created) {
         this.created = created;
     }
@@ -80,6 +90,7 @@ public class Note implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
         dest.writeString(name);
         dest.writeString(description);
         dest.writeString(new SimpleDateFormat().format(created));

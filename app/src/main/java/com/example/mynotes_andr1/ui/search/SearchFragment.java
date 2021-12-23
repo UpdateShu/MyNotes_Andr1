@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.mynotes_andr1.NotesActivity;
 import com.example.mynotes_andr1.R;
 
 public class SearchFragment extends Fragment {
@@ -31,7 +30,7 @@ public class SearchFragment extends Fragment {
         directorySelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((NotesActivity)getActivity()).showFolders();
+                //((NotesActivity)getActivity()).showFolders();
             }
         });
     }

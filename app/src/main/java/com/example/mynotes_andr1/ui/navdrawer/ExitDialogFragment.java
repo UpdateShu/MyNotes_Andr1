@@ -1,26 +1,34 @@
 package com.example.mynotes_andr1.ui.navdrawer;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import com.example.mynotes_andr1.R;
+import com.example.mynotes_andr1.ui.list.NoteDialogFragment;
 
 public class ExitDialogFragment extends BaseAlertDialogFragment {
 
-    public static final String TAG = "ExitDialogFragment";
-    public static final String EXIT_RESULT = "ExitDialogFragment_RESULT";
-    public static final String EXIT_BUTTON = "EXIT_BUTTON";
+    private static final String TAG = "ExitDialogFragment";
+    private static final String KEY_RESULT = "ExitDialogFragment_KEY_RESULT";
+
+    @Override
+    public String getDialogTag() {
+        return TAG;
+    }
+
+    @Override
+    public String getKeyResult() {
+        return KEY_RESULT;
+    }
 
     public static ExitDialogFragment newInstance() {
-        KEY_RESULT = EXIT_RESULT;
-        ARG_BUTTON = EXIT_BUTTON;
+        return new ExitDialogFragment();
+    }
 
-        ExitDialogFragment dialogFragment = new ExitDialogFragment();
-        Bundle bundle = new Bundle();
-
-        bundle.putString(ARG_TITLE, "Подтверждение выхода");//невозможно получить стат строку из R.string.exit_dialog_title));
-        bundle.putString(ARG_MESSAGE, "Выйти из программы?");
-        bundle.putString(ARG_POSITIVE_BUTTON, "Выход");
-        dialogFragment.setArguments(bundle);
-        return dialogFragment;
+    public static ExitDialogFragment newInstance(Resources res) {
+        ExitDialogFragment fragment = new ExitDialogFragment();
+        setArguments(fragment, res.getString(R.string.exit_dialog_title),
+                res.getString(R.string.exit_dialog_message), res.getString(R.string.exit_dialog_action));
+        return fragment;
     }
 }
