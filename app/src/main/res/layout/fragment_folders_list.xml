@@ -12,6 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/toolbar"
+            app:menu="@menu/menu_folders_list"
             app:title="Все разделы">
         </com.google.android.material.appbar.MaterialToolbar>
 

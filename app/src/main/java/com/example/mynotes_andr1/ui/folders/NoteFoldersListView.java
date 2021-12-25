@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface NoteFoldersListView {
     void showNoteFolders(List<NoteFolder> folders);
+    void showError(String error);
 }

@@ -21,7 +21,8 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/details_padding"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <TextView
@@ -32,27 +33,59 @@
             android:textSize="20sp"
             tools:text="Дата создания" />
 
-        <TextView
-            android:id="@+id/note_name"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:layout_marginVertical="@dimen/note_vertical_margin"
-            tools:text="Название заметки"/>
+            android:hint="@string/hint_note_name">
 
-        <androidx.core.widget.NestedScrollView
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/note_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:layout_marginVertical="@dimen/note_vertical_margin"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/note_vertical_margin"
+            android:layout_marginBottom="100dp"
+            android:hint="Текст заметки">
 
-            <TextView
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/note_description"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textSize="26sp"
-                tools:text="Текст заметки"></TextView>
-        </androidx.core.widget.NestedScrollView>
+                android:layout_height="200dp"
+                android:textSize="26sp"></com.google.android.material.textfield.TextInputEditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Сохранить"
+            android:layout_marginTop="20dp" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+        </FrameLayout>
+
 
     </LinearLayout>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
 

@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -14,23 +15,37 @@ import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.mynotes_andr1.R;
 import com.example.mynotes_andr1.domain.Note;
 import com.example.mynotes_andr1.domain.NoteFolder;
 import com.example.mynotes_andr1.ui.details.NoteDetailsFragment;
 import com.example.mynotes_andr1.ui.folders.NoteFoldersFragment;
-import com.example.mynotes_andr1.ui.list.NotesInfoFragment;
-import com.example.mynotes_andr1.ui.list.NotesEditFragment;
+import com.example.mynotes_andr1.ui.list.NotesFragment;
 import com.example.mynotes_andr1.ui.search.SearchFragment;
 import com.example.mynotes_andr1.ui.settings.SettingsFragment;
 import com.google.android.material.navigation.NavigationView;
 
+import java.io.Serializable;
+
 public class NavDrawerActivity extends AppCompatActivity implements NavDrawerHost {
 
+    private static final String ARG_FOLDER = "ARG_FOLDER";
     private static final String ARG_NOTE = "ARG_NOTE";
+    private static final String ARG_TAB = "ARG_TAB";
+
+    enum NotesTab implements Serializable {
+        DEFAULT,
+        NOTES_TAB,
+        FOLDERS_TAB,
+        SETTINGS_TAB,
+    }
 
     private DrawerLayout drawer;
+    private FragmentContainerView detailsView;
+
+    private NotesTab selectedTab = NotesTab.DEFAULT;
     private NoteFolder selectedFolder;
     private Note selectedNote;
 
@@ -38,8 +53,27 @@ public class NavDrawerActivity extends AppCompatActivity implements NavDrawerHos
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_drawer);
-        drawer = findViewById(R.id.drawer);
 
+        drawer = findViewById(R.id.drawer);
+        detailsView = findViewById(R.id.details_container);
+
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(ARG_NOTE)) {
+                selectedNote = savedInstanceState.getParcelable(ARG_NOTE);
+            }
+            if (savedInstanceState.containsKey(ARG_FOLDER)) {
+                selectedFolder = savedInstanceState.getParcelable(ARG_FOLDER);
+            }
+            if (savedInstanceState.containsKey(ARG_TAB)) {
+                NotesTab tab = (NotesTab)savedInstanceState.getSerializable(ARG_TAB);
+                if (tab != selectedTab) {
+                    setSelectedTab(tab);
+                }
+            }
+        }
+        else {
+            setSelectedTab(NotesTab.NOTES_TAB);
+        }
         NavigationView navigationView = findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -52,60 +86,35 @@ public class NavDrawerActivity extends AppCompatActivity implements NavDrawerHos
                         return true;
 
                     case R.id.action_folders:
-                        showFoldersList();
+                        setSelectedTab(NotesTab.FOLDERS_TAB);
                         drawer.closeDrawer(GravityCompat.START);
                         return true;
 
                     case R.id.action_notes:
-                        showNoteList();
+                        setSelectedTab(NotesTab.NOTES_TAB);
                         drawer.closeDrawer(GravityCompat.START);
                         return true;
 
                     case R.id.action_settings:
-                        showSettings();
+                        setSelectedTab(NotesTab.SETTINGS_TAB);
                         drawer.closeDrawer(GravityCompat.START);
                         return true;
 
                     case R.id.action_exit:
-                        ExitDialogFragment.newInstance().show(getSupportFragmentManager(), ExitDialogFragment.TAG);
+                        ExitDialogFragment dialog = ExitDialogFragment.newInstance(getResources());
+                        dialog.show(getSupportFragmentManager(), dialog.getDialogTag());
                 }
                 return false;
             }
         });
-
         getSupportFragmentManager()
-                .setFragmentResultListener(NoteFoldersFragment.KEY_RESULT, this, new FragmentResultListener() {
-                    @Override
-                    public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                        selectedFolder = result.getParcelable(NoteFoldersFragment.ARG_FOLDER);
-
-                        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                            showFoldersDetails();
-                        } else {
-                            //Intent intent = new Intent(NavDrawerActivity.this, NotesListActivity.class);
-                            //intent.putExtra(NotesListActivity.EXTRA_FOLDER, selectedFolder);
-                            //startActivity(intent);
-                        }
-                    }
-                });
-
-        getSupportFragmentManager()
-                .setFragmentResultListener(NotesEditFragment.KEY_RESULT, this, new FragmentResultListener() {
-                    @Override
-                    public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                        selectedNote = result.getParcelable(NotesEditFragment.ARG_NOTE);
-                        showNote(selectedNote);
-                    }
-                });
-
-        getSupportFragmentManager()
-                .setFragmentResultListener(ExitDialogFragment.EXIT_RESULT, this,
+                .setFragmentResultListener(ExitDialogFragment.newInstance(getResources()).getKeyResult(), this,
                         new FragmentResultListener() {
                             @Override
                             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                                switch (result.getInt(ExitDialogFragment.EXIT_BUTTON)) {
+                                switch (result.getInt(ExitDialogFragment.ARG_BUTTON)) {
                                     case DialogInterface.BUTTON_POSITIVE:
-                                        System.exit(0);
+                                        finish();
                                         break;
                                     case DialogInterface.BUTTON_NEGATIVE:
                                         break;
@@ -113,6 +122,47 @@ public class NavDrawerActivity extends AppCompatActivity implements NavDrawerHos
                             }
                         });
 
+    }
+
+    void setSelectedTab(NotesTab tab) {
+        selectedTab = tab;
+        switch (tab) {
+            case NOTES_TAB:
+                showNoteList();
+                if (selectedNote != null) {
+                    showNote(selectedNote);
+                }
+                getSupportFragmentManager()
+                        .setFragmentResultListener(NotesFragment.KEY_RESULT, this, new FragmentResultListener() {
+                            @Override
+                            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                                Note note = result.getParcelable(NotesFragment.ARG_NOTE);
+                                if (note != null) {
+                                    showNote(note);
+                                }
+                            }
+                        });
+                break;
+
+            case FOLDERS_TAB:
+                showFoldersList();
+                getSupportFragmentManager()
+                        .setFragmentResultListener(NoteFoldersFragment.KEY_RESULT, this, new FragmentResultListener() {
+                            @Override
+                            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                                NoteFolder folder = result.getParcelable(NoteFoldersFragment.ARG_FOLDER);
+                                if (folder != null) {
+                                    selectedFolder = folder;
+                                    setSelectedTab(NotesTab.NOTES_TAB);
+                                }
+                            }
+                        });
+                break;
+
+            case SETTINGS_TAB:
+                showSettings();
+                break;
+        }
     }
 
     @Override
@@ -130,17 +180,38 @@ public class NavDrawerActivity extends AppCompatActivity implements NavDrawerHos
         toggle.syncState();
     }
 
+    @Override
+    public void setDetailsVisible(boolean visible) {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            detailsView.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
+        }
+    }
+
     void showSearch() {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_search, new SearchFragment(), SearchFragment.TAG)
                 .commit();
     }
 
+    void showFoldersList() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
+                .replace(R.id.feature_container, new NoteFoldersFragment(), NoteFoldersFragment.TAG);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            //transaction.replace(R.id.details_container, new NotesEditFragment(), NotesEditFragment.TAG);
+            detailsView.setVisibility(View.INVISIBLE);
+        }
+        transaction.commit();
+    }
+
     void showNoteList() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
-                .replace(R.id.feature_container, new NotesEditFragment(), NotesEditFragment.TAG);
+                .replace(R.id.feature_container, NotesFragment.newInstance(selectedFolder), NotesFragment.TAG);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            transaction.replace(R.id.details_container, new NoteDetailsFragment(), NoteDetailsFragment.TAG);
+            //transaction.replace(R.id.details_container, new NoteDetailsFragment(), NoteDetailsFragment.TAG);
+            detailsView.setVisibility(View.VISIBLE);
+        }
+        if (selectedFolder != null) {
+            transaction.addToBackStack(null);
         }
         transaction.commit();
     }
@@ -148,45 +219,61 @@ public class NavDrawerActivity extends AppCompatActivity implements NavDrawerHos
     @Override
     public void showNote(Note note) {
         selectedNote = note;
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(NoteDetailsFragment.ARG_NOTE, selectedNote);
-        getSupportFragmentManager()
-            .setFragmentResult(NoteDetailsFragment.KEY_RESULT, bundle);
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-
-        }
-        else {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.feature_container, new NoteDetailsFragment(), NoteDetailsFragment.TAG)
+                    .replace(R.id.feature_container, NoteDetailsFragment.newInstance(selectedNote), NoteDetailsFragment.TAG)
                     .addToBackStack(null)
                     .commit();
         }
-    }
-
-    void showFoldersList() {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
-                .replace(R.id.feature_container, new NoteFoldersFragment(), NoteFoldersFragment.TAG);
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            transaction.replace(R.id.details_container, new NotesInfoFragment(), NotesInfoFragment.TAG);
+        else {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(NoteDetailsFragment.ARG_NOTE, selectedNote);
+            getSupportFragmentManager()
+                    .setFragmentResult(NoteDetailsFragment.KEY_RESULT, bundle);
         }
-        transaction.commit();
     }
 
-    void showFoldersDetails() {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(NotesInfoFragment.ARG_FOLDER, selectedFolder);
-        getSupportFragmentManager()
-                .setFragmentResult(NotesInfoFragment.KEY_RESULT, bundle);
-    }
+    /*@Override
+    public void showFolder(NoteFolder folder) {
+        selectedFolder = folder;
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.feature_container, NotesEditFragment.newInstance(selectedFolder), NotesEditFragment.TAG)
+                    .addToBackStack(null)
+                    .commit();
+        }
+        else {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(NotesEditFragment.ARG_FOLDER, selectedFolder);
+            getSupportFragmentManager()
+                    .setFragmentResult(NotesEditFragment.KEY_RESULT, bundle);
+        }
+    }*/
 
     void showSettings() {
         FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
         trans.replace(R.id.feature_container, new SettingsFragment(), SettingsFragment.TAG);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            detailsView.setVisibility(View.VISIBLE);
+        }
         Fragment searchfragment = getSupportFragmentManager()
                 .findFragmentByTag(SearchFragment.TAG);
         if (searchfragment != null) {
             trans.remove(searchfragment);
         }
         trans.commit();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (selectedNote != null) {
+            outState.putParcelable(ARG_NOTE, selectedNote);
+        }
+        if (selectedFolder != null) {
+            outState.putParcelable(ARG_FOLDER, selectedFolder);
+        }
+        outState.putSerializable(ARG_TAB, selectedTab);
     }
 }

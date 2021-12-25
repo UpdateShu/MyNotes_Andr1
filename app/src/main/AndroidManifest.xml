@@ -18,12 +18,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.details.NoteDetailsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".NotesActivity"
-            android:exported="true"></activity>
     </application>
 
 </manifest>
