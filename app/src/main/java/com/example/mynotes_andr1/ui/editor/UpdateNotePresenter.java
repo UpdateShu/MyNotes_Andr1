@@ -1,10 +1,11 @@
-package com.example.mynotes_andr1.ui.details;
+package com.example.mynotes_andr1.ui.editor;
 
 import android.os.Bundle;
 
 import com.example.mynotes_andr1.R;
 import com.example.mynotes_andr1.domain.CallBack;
 import com.example.mynotes_andr1.domain.Note;
+import com.example.mynotes_andr1.domain.NoteFolder;
 import com.example.mynotes_andr1.domain.NotesRepository;
 
 import java.util.Date;
@@ -14,12 +15,14 @@ public class UpdateNotePresenter implements NotePresenter {
     public static final String KEY = "NoteDetailsFragment_UPDATENOTE";
     public static final String ARG_NOTE = "ARG_NOTE";
 
-    private NoteDetailsView view;
+    private EditNoteView view;
     private NotesRepository repository;
+    private Note note;
 
-    public UpdateNotePresenter(Note note, NoteDetailsView view, NotesRepository repository) {
+    public UpdateNotePresenter(Note note, EditNoteView view, NotesRepository repository) {
         this.view = view;
         this.repository = repository;
+        this.note = note;
 
         view.setActionButtonText(R.string.btn_update);
         view.setTitle(R.string.update_title);
@@ -33,7 +36,7 @@ public class UpdateNotePresenter implements NotePresenter {
 
         view.showProgress();
 
-        repository.updateNote(name, message, created, new CallBack<Note>() {
+        repository.updateNote(note, name, message, created, new CallBack<Note>() {
             @Override
             public void onSuccess(Note result) {
                 view.hideProgress();

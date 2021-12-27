@@ -1,31 +1,28 @@
-package com.example.mynotes_andr1.ui.list;
+package com.example.mynotes_andr1.ui.notes;
 
 import android.content.Context;
-import android.icu.text.CaseMap;
 import android.os.Build;
-import android.os.Bundle;
-import android.widget.LinearLayout;
 
 import androidx.annotation.RequiresApi;
+import androidx.fragment.app.FragmentActivity;
 
 import com.example.mynotes_andr1.R;
 import com.example.mynotes_andr1.domain.CallBack;
-import com.example.mynotes_andr1.domain.InMemoryNotesRepository;
 import com.example.mynotes_andr1.domain.Note;
 import com.example.mynotes_andr1.domain.NoteFolder;
 import com.example.mynotes_andr1.domain.NotesRepository;
-import com.example.mynotes_andr1.ui.folders.NoteFoldersListPresenter;
-import com.example.mynotes_andr1.ui.list.adapter.AdapterItem;
-import com.example.mynotes_andr1.ui.list.adapter.NoteAdapterItem;
-import com.example.mynotes_andr1.ui.navdrawer.BaseAlertDialogFragment;
+import com.example.mynotes_andr1.ui.adapters.AdapterItem;
+import com.example.mynotes_andr1.ui.adapters.NoteAdapterItem;
+import com.example.mynotes_andr1.ui.navdrawer.NavDrawerHost;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class NotesPresenter {
 
     private final Context context;
+
+    private final FragmentActivity activity;
 
     private final NotesListView view;
 
@@ -38,8 +35,9 @@ public class NotesPresenter {
         return selectedNote;
     }
 
-    public NotesPresenter(Context context, NotesListView view, NotesRepository repository) {
+    public NotesPresenter(Context context, FragmentActivity activity, NotesListView view, NotesRepository repository) {
         this.context = context;
+        this.activity = activity;
         this.view = view;
         this.repository = repository;
     }
@@ -106,6 +104,12 @@ public class NotesPresenter {
 
     public void setSelectedNote(Note note) {
         selectedNote = note;
+    }
+
+    public void addNote() {
+        if (activity instanceof NavDrawerHost) {
+            ((NavDrawerHost)activity).showNote(null);
+        }
     }
 
     public void onNoteAdded(Note note) {

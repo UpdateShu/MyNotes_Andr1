@@ -1,4 +1,4 @@
-package com.example.mynotes_andr1.ui.details;
+package com.example.mynotes_andr1.ui.editor;
 
 import android.os.Bundle;
 
@@ -8,16 +8,17 @@ import com.example.mynotes_andr1.domain.Note;
 import com.example.mynotes_andr1.domain.NotesRepository;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class AddNotePresenter implements NotePresenter {
 
     public static final String KEY = "NoteDetailsFragment_ADDNOTE";
     public static final String ARG_NOTE = "ARG_NOTE";
 
-    private NoteDetailsView view;
+    private EditNoteView view;
     private NotesRepository repository;
 
-    public AddNotePresenter(NoteDetailsView view, NotesRepository repository) {
+    public AddNotePresenter(EditNoteView view, NotesRepository repository) {
         this.view = view;
         this.repository = repository;
 

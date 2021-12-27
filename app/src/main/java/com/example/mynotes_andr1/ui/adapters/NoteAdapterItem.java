@@ -1,6 +1,7 @@
-package com.example.mynotes_andr1.ui.list.adapter;
+package com.example.mynotes_andr1.ui.adapters;
 
 import com.example.mynotes_andr1.domain.Note;
+import com.example.mynotes_andr1.ui.adapters.AdapterItem;
 
 public class NoteAdapterItem implements AdapterItem {
 
@@ -31,5 +32,10 @@ public class NoteAdapterItem implements AdapterItem {
 
     public Note getNote() {
         return note;
+    }
+
+    @Override
+    public String getId() {
+        return note.getId();
     }
 }

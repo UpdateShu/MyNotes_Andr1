@@ -20,9 +20,9 @@ import android.view.View;
 import com.example.mynotes_andr1.R;
 import com.example.mynotes_andr1.domain.Note;
 import com.example.mynotes_andr1.domain.NoteFolder;
-import com.example.mynotes_andr1.ui.details.NoteDetailsFragment;
+import com.example.mynotes_andr1.ui.editor.EditNoteFragment;
 import com.example.mynotes_andr1.ui.folders.NoteFoldersFragment;
-import com.example.mynotes_andr1.ui.list.NotesFragment;
+import com.example.mynotes_andr1.ui.notes.NotesFragment;
 import com.example.mynotes_andr1.ui.search.SearchFragment;
 import com.example.mynotes_andr1.ui.settings.SettingsFragment;
 import com.google.android.material.navigation.NavigationView;
@@ -221,15 +221,15 @@ public class NavDrawerActivity extends AppCompatActivity implements NavDrawerHos
         selectedNote = note;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.feature_container, NoteDetailsFragment.newInstance(selectedNote), NoteDetailsFragment.TAG)
+                    .replace(R.id.feature_container, EditNoteFragment.newInstance(selectedNote), EditNoteFragment.TAG)
                     .addToBackStack(null)
                     .commit();
         }
         else {
             Bundle bundle = new Bundle();
-            bundle.putParcelable(NoteDetailsFragment.ARG_NOTE, selectedNote);
+            bundle.putParcelable(EditNoteFragment.ARG_NOTE, selectedNote);
             getSupportFragmentManager()
-                    .setFragmentResult(NoteDetailsFragment.KEY_RESULT, bundle);
+                    .setFragmentResult(EditNoteFragment.KEY_RESULT, bundle);
         }
     }
 

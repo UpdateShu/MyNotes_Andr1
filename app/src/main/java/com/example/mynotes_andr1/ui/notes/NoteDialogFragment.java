@@ -1,6 +1,5 @@
-package com.example.mynotes_andr1.ui.list;
+package com.example.mynotes_andr1.ui.notes;
 
-import android.content.Context;
 import android.content.res.Resources;
 
 import com.example.mynotes_andr1.R;

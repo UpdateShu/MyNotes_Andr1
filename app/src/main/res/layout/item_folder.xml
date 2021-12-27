@@ -1,16 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/folder_name"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/f_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Название раздела"
-        android:layout_margin="10dp"
-        android:textSize="24sp"
-        android:background="@color/teal_200">
-    </TextView>
+        android:layout_marginHorizontal="@dimen/list_horizontal_margin"
+        android:layout_marginVertical="@dimen/list_vertical_margin">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/list_horizontal_margin"
+            android:layout_marginVertical="@dimen/list_vertical_margin"
+            android:background="@android:color/white"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/folder_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/note_vertical_margin"
+                android:layout_marginHorizontal="@dimen/list_horizontal_margin"
+                android:layout_marginBottom="@dimen/note_vertical_margin"
+                android:textSize="24sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                tools:text="@string/hint_folder_name" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </FrameLayout>

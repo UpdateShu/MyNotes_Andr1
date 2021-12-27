@@ -25,9 +25,9 @@ public class InMemoryNotesRepository implements NotesRepository {
     }
 
     public InMemoryNotesRepository() {
-        folders.add(new NoteFolder(1, "Раздел 1"));
-        folders.add(new NoteFolder(2, "Раздел 2"));
-        folders.add(new NoteFolder(3, "Раздел 3"));
+        folders.add(new NoteFolder("1", "Раздел 1"));
+        folders.add(new NoteFolder("2", "Раздел 2"));
+        folders.add(new NoteFolder("3", "Раздел 3"));
     }
 
     @Override
@@ -74,12 +74,12 @@ public class InMemoryNotesRepository implements NotesRepository {
 
         ArrayList<Note> noteList = new ArrayList<>();
         switch (folder.getId()) {
-            case 1:
+            case "1":
                 noteList.add(new Note("1", "Заметка 1", "У фрагмента есть свой жизненный цикл, связанный с жизненным циклом активити, в которой он создается и отображается", new Date()));
                 noteList.add(new Note("2", "Заметка 2", "У фрагмента нет доступа к Контексту приложения, но есть доступ к Активити, в которой он отображается (а значит и к Контексту)", new Date()));
                 break;
 
-            case 2:
+            case "2":
                 noteList.add(new Note("3", "Заметка 3", "Фрагментами управляет специальный класс FragmentManager. Именно через него идут все транзакции", new Date()));
                 noteList.add(new Note("4", "Заметка 4", "Фрагменты создаются, пересоздаются, добавляются в стек и т. п. через транзакции", new Date()));
                 noteList.add(new Note("5", "Заметка 5", "Фрагменты пересоздаются так же, как и активити", new Date()));
@@ -89,7 +89,7 @@ public class InMemoryNotesRepository implements NotesRepository {
                 noteList.add(new Note("9", "Заметка 9", "Одни и те же фрагменты можно переиспользовать в разных частях приложения — это всего лишь экран в рамках какой-либо активити", new Date()));
                 break;
 
-            case 3:
+            case "3":
                 noteList.add(new Note("10", "Заметка 10", "Фрагменты не нужно прописывать в Манифесте, но нужно прописывать для них контейнер в xml", new Date()));
                 noteList.add(new Note("11", "Заметка 11", "В коллбэке onCreateView() вы создаете фрагмент из xml", new Date()));
                 noteList.add(new Note("12", "Заметка 12", "В коллбэке onViewCreated() вы инициализируете нужные вам элементы", new Date()));
@@ -99,25 +99,25 @@ public class InMemoryNotesRepository implements NotesRepository {
     }
 
     @Override
-    public void addFolder(NoteFolder folder) {
-
+    public void addFolder(String name, CallBack<NoteFolder> callBack) {
+        NoteFolder folder = new NoteFolder("", name);
+        folders.add(folder);
+        callBack.onSuccess(folder);
     }
 
     @Override
-    public void deleteFolder(NoteFolder folder) {
+    public void deleteFolder(NoteFolder folder, CallBack<Void> callback) {
 
     }
 
     @Override
     public void addNote(String name, String description, Date date, CallBack<Note> callBack) {
-
-        Note note = new Note(UUID.randomUUID().toString(), name, description, date);
-
+        Note note = new Note("", name, description, date);
         callBack.onSuccess(note);
     }
 
     @Override
-    public void updateNote(String name, String description, Date date, CallBack<Note> note) {
+    public void updateNote(Note note, String name, String description, Date date, CallBack<Note> callBack) {
 
     }
 
