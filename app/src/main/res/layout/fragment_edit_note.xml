@@ -25,14 +25,6 @@
         android:padding="@dimen/details_padding"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <TextView
-            android:id="@+id/note_created"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="viewEnd"
-            android:textSize="20sp"
-            tools:text="Дата создания" />
-
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,22 +39,43 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ссылка">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/note_link"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/note_vertical_margin"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textSize="@dimen/editor_textSize" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/note_vertical_margin"
-            android:layout_marginBottom="100dp"
+            android:layout_marginBottom="0dp"
             android:hint="Текст заметки">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/note_description"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:textSize="26sp"></com.google.android.material.textfield.TextInputEditText>
+                android:layout_height="150dp"
+                android:textSize="20sp"></com.google.android.material.textfield.TextInputEditText>
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <DatePicker
+            android:id="@+id/note_created"
+            android:layout_width="match_parent"
+            android:layout_height="127dp"
+            android:layout_gravity="end"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -72,7 +85,7 @@
             android:id="@+id/btn_save"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Сохранить"
+            android:text="@string/btn_save"
             android:layout_marginTop="20dp" />
 
         <ProgressBar

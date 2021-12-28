@@ -7,7 +7,7 @@ import java.util.List;
 
 public class NoteFolder implements Parcelable {
 
-    private int id;
+    private String id;
 
     private String name;
 
@@ -17,12 +17,12 @@ public class NoteFolder implements Parcelable {
         this.notes = notes;
     }
 
-    public NoteFolder(int id, String name) {
+    public NoteFolder(String id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public int getId() { return id; }
+    public String getId() { return id; }
 
     public String getName() {
         return name;
@@ -33,7 +33,7 @@ public class NoteFolder implements Parcelable {
     }
 
     protected NoteFolder(Parcel in) {
-        id = in.readInt();
+        id = in.readString();
         name = in.readString();
         notes = in.createTypedArrayList(Note.CREATOR);
     }
@@ -57,7 +57,7 @@ public class NoteFolder implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
+        dest.writeString(id);
         dest.writeString(name);
         dest.writeTypedList(notes);
     }

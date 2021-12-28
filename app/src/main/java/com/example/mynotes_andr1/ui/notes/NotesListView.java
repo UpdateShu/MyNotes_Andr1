@@ -1,10 +1,8 @@
-package com.example.mynotes_andr1.ui.list;
+package com.example.mynotes_andr1.ui.notes;
 
 import com.example.mynotes_andr1.domain.Note;
 import com.example.mynotes_andr1.domain.NoteFolder;
-import com.example.mynotes_andr1.ui.list.adapter.NoteAdapterItem;
-
-import java.util.List;
+import com.example.mynotes_andr1.ui.adapters.NoteAdapterItem;
 
 public interface NotesListView {
 

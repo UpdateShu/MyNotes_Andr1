@@ -1,4 +1,4 @@
-package com.example.mynotes_andr1.ui.details;
+package com.example.mynotes_andr1.ui.editor;
 
 import java.util.Date;
 

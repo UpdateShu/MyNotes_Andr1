@@ -9,12 +9,10 @@ public interface NotesRepository {
 
     void loadNoteFolder(NoteFolder folder, CallBack<Void> callBack);
 
-    void addFolder(NoteFolder folder);
+    void addFolder(String name, CallBack<NoteFolder> callBack);
+    void deleteFolder(NoteFolder folder, CallBack<Void> callBack);
 
-    void deleteFolder(NoteFolder folder);
-
-    void addNote(String name, String description, Date date, CallBack<Note> note);
-
-    void updateNote(String name, String description, Date date, CallBack<Note> note);
+    void addNote(String name, String description, Date date, CallBack<Note> callBack);
+    void updateNote(Note note, String name, String description, Date date, CallBack<Note> callBack);
     void deleteNote(Note note, CallBack<Void> callback);
 }

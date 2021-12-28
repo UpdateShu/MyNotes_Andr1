@@ -1,10 +1,8 @@
 package com.example.mynotes_andr1.ui.navdrawer;
 
 import android.content.res.Resources;
-import android.os.Bundle;
 
 import com.example.mynotes_andr1.R;
-import com.example.mynotes_andr1.ui.list.NoteDialogFragment;
 
 public class ExitDialogFragment extends BaseAlertDialogFragment {
 

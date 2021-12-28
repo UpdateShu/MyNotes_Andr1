@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card"
+        android:id="@+id/note_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/list_horizontal_margin"
@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
                 android:textAlignment="viewEnd"
-                tools:text="Дата создания" />
+                tools:text="@string/hint_note_created" />
 
             <TextView
                 android:id="@+id/note_name"
@@ -33,14 +33,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/note_vertical_margin"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                tools:text="Название заметки" />
+                tools:text="@string/hint_note_name" />
 
             <TextView
                 android:id="@+id/note_description"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/note_height"
                 android:textSize="20sp"
-                tools:text="Текст заметки"></TextView>
+                tools:text="@string/hint_note_description"></TextView>
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

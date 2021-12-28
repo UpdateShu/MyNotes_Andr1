@@ -1,14 +1,12 @@
-package com.example.mynotes_andr1.ui.details;
+package com.example.mynotes_andr1.ui.editor;
 
 import android.os.Bundle;
 
 import androidx.annotation.StringRes;
 
-import com.example.mynotes_andr1.domain.Note;
-
 import java.util.Date;
 
-public interface NoteDetailsView {
+public interface EditNoteView {
 
     void showProgress();
 

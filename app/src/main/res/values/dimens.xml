@@ -6,4 +6,5 @@
     <dimen name="note_height">50dp</dimen>
     <dimen name="details_padding">15dp</dimen>
     <dimen name="tools_margin">20dp</dimen>
+    <dimen name="editor_textSize">20sp</dimen>
 </resources>

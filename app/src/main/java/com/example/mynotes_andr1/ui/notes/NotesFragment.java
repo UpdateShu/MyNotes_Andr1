@@ -1,4 +1,4 @@
-package com.example.mynotes_andr1.ui.list;
+package com.example.mynotes_andr1.ui.notes;
 
 import android.content.DialogInterface;
 import android.os.Build;
@@ -22,14 +22,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.mynotes_andr1.R;
+import com.example.mynotes_andr1.domain.FirestoreNotesRepository;
 import com.example.mynotes_andr1.domain.InMemoryNotesRepository;
 import com.example.mynotes_andr1.domain.Note;
 import com.example.mynotes_andr1.domain.NoteFolder;
-import com.example.mynotes_andr1.ui.details.AddNotePresenter;
-import com.example.mynotes_andr1.ui.details.UpdateNotePresenter;
-import com.example.mynotes_andr1.ui.list.adapter.AdapterItem;
-import com.example.mynotes_andr1.ui.list.adapter.NoteAdapterItem;
-import com.example.mynotes_andr1.ui.list.adapter.NotesAdapter;
+import com.example.mynotes_andr1.ui.editor.AddNotePresenter;
+import com.example.mynotes_andr1.ui.editor.UpdateNotePresenter;
+import com.example.mynotes_andr1.ui.adapters.AdapterItem;
+import com.example.mynotes_andr1.ui.adapters.NoteAdapterItem;
+import com.example.mynotes_andr1.ui.adapters.NotesAdapter;
 import com.example.mynotes_andr1.ui.navdrawer.BaseAlertDialogFragment;
 import com.example.mynotes_andr1.ui.navdrawer.BaseNavFeatureFragment;
 import com.example.mynotes_andr1.ui.navdrawer.NavDrawerHost;
@@ -74,11 +75,14 @@ public class NotesFragment extends BaseNavFeatureFragment implements NotesListVi
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        presenter = new NotesPresenter(requireContext(), this, new InMemoryNotesRepository());
-        adapter = new NotesAdapter();
+        presenter = new NotesPresenter(requireContext(), requireActivity(), this, new FirestoreNotesRepository());
+        adapter = new NotesAdapter(this);
         adapter.setOnClick(new NotesAdapter.OnClick() {
             @Override
             public void onClick(Note note) {
+                //Bundle data = new Bundle();
+                //data.putParcelable(ARG_NOTE, note);
+                //getParentFragmentManager().setFragmentResult(KEY_RESULT, data);
                 presenter.setSelectedNote(note);
             }
 
@@ -101,7 +105,7 @@ public class NotesFragment extends BaseNavFeatureFragment implements NotesListVi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        root = view.findViewById(R.id.coordinator);
+        root = view.findViewById(R.id.notes_coordinator);
 
         notesContainer = view.findViewById(R.id.notes_container);
         notesContainer.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
@@ -138,7 +142,7 @@ public class NotesFragment extends BaseNavFeatureFragment implements NotesListVi
         view.findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //presenter.addNote();
+                presenter.addNote();
             }
         });
 
@@ -218,7 +222,7 @@ public class NotesFragment extends BaseNavFeatureFragment implements NotesListVi
 
     @Override
     public void onNoteRemoved(Note selectedNote) {
-        int index = adapter.removeItem(selectedNote);
+        int index = adapter.removeItem(selectedNote.getId());
         adapter.notifyItemRemoved(index);
     }
 
@@ -243,7 +247,7 @@ public class NotesFragment extends BaseNavFeatureFragment implements NotesListVi
         super.onCreateContextMenu(menu, v, menuInfo);
 
         MenuInflater menuInflater = requireActivity().getMenuInflater();
-        menuInflater.inflate(R.menu.notes_context_menu, menu);
+        menuInflater.inflate(R.menu.context_menu_notes, menu);
     }
 
     @Override
@@ -256,13 +260,12 @@ public class NotesFragment extends BaseNavFeatureFragment implements NotesListVi
             dialog.show(getParentFragmentManager(), dialog.getDialogTag());
             return true;
         }
-
         if (item.getItemId() == R.id.action_update) {
             Bundle data = new Bundle();
             data.putParcelable(ARG_NOTE, note);
             getParentFragmentManager().setFragmentResult(KEY_RESULT, data);
             //Toast.makeText(requireContext(), note.getName(), Toast.LENGTH_LONG).show();
-
+            presenter.setSelectedNote(note);
             return true;
         }
 

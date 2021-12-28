@@ -37,7 +37,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/details_container"
-            android:name="com.example.mynotes_andr1.ui.details.NoteDetailsFragment"
+            android:name="com.example.mynotes_andr1.ui.editor.EditNoteFragment"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/teal_700"
