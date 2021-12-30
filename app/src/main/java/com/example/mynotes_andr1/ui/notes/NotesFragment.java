@@ -80,9 +80,10 @@ public class NotesFragment extends BaseNavFeatureFragment implements NotesListVi
         adapter.setOnClick(new NotesAdapter.OnClick() {
             @Override
             public void onClick(Note note) {
-                //Bundle data = new Bundle();
-                //data.putParcelable(ARG_NOTE, note);
-                //getParentFragmentManager().setFragmentResult(KEY_RESULT, data);
+                Bundle data = new Bundle();
+                data.putParcelable(ARG_FOLDER, presenter.getCurrentFolder());
+                data.putParcelable(ARG_NOTE, note);
+                getParentFragmentManager().setFragmentResult(KEY_RESULT, data);
                 presenter.setSelectedNote(note);
             }
 
@@ -151,7 +152,7 @@ public class NotesFragment extends BaseNavFeatureFragment implements NotesListVi
                 new FragmentResultListener() {
                     @Override
                     public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                        switch (result.getInt(BaseAlertDialogFragment.ARG_BUTTON)) {
+                        switch (result.getInt(NoteDialogFragment.ARG_BUTTON)) {
                             case DialogInterface.BUTTON_POSITIVE:
                                 Toast.makeText(requireActivity(), "Удалено!", Toast.LENGTH_SHORT).show();
                                 break;
@@ -198,6 +199,7 @@ public class NotesFragment extends BaseNavFeatureFragment implements NotesListVi
     @Override
     public void showFolderNotes(NoteFolder folder) {
 
+        this.folder = folder;
         if (folder != null) {
             toolbar.setTitle(folder.getName());
             List<AdapterItem> noteItems = presenter.getNoteItems(folder);
@@ -255,7 +257,6 @@ public class NotesFragment extends BaseNavFeatureFragment implements NotesListVi
 
         Note note = presenter.getSelectedNote();
         if (item.getItemId() == R.id.action_delete) {
-            String message = getString(R.string.delete_note) + "'" + note.getName() + "'?";
             NoteDialogFragment dialog = NoteDialogFragment.newInstance(getResources(), note.getName());
             dialog.show(getParentFragmentManager(), dialog.getDialogTag());
             return true;

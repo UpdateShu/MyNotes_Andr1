@@ -18,8 +18,6 @@ import java.util.List;
 
 public class NoteFoldersAdapter extends ListAdapter {
 
-    private Fragment fragment;
-
     public NoteFoldersAdapter(Fragment fragment) {
         super(fragment);
     }
@@ -37,11 +35,10 @@ public class NoteFoldersAdapter extends ListAdapter {
             card.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    card.showContextMenu();
                     AdapterItem item = data.get(getAdapterPosition());
                     if (item instanceof NoteFolderAdapterItem) {
                         if (getOnClick() != null) {
-                            getOnClick().onLongClick(((NoteFolderAdapterItem)item).getFolder());
+                            getOnClick().onClick(((NoteFolderAdapterItem)item).getFolder());
                         }
                     }
                 }

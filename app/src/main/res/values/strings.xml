@@ -34,4 +34,7 @@
     <string name="open_action">Открыть</string>
     <string name="hint_folder_name">Наименование папки</string>
     <string name="input_folder_message">Заполните наименование папки!</string>
+    <string name="paste_action">Вставить</string>
+    <string name="copy_action">Копировать</string>
+    <string name="btn_go_to_link">Перейти</string>
 </resources>

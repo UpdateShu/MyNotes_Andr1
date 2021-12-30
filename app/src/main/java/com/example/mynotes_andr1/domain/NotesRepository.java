@@ -12,7 +12,7 @@ public interface NotesRepository {
     void addFolder(String name, CallBack<NoteFolder> callBack);
     void deleteFolder(NoteFolder folder, CallBack<Void> callBack);
 
-    void addNote(String name, String description, Date date, CallBack<Note> callBack);
-    void updateNote(Note note, String name, String description, Date date, CallBack<Note> callBack);
+    void addNote(NoteFolder folder, String name, String link, String description, Date date, CallBack<Note> callBack);
+    void updateNote(Note note, NoteFolder folder, String name, String link, String description, Date date, CallBack<Note> callBack);
     void deleteNote(Note note, CallBack<Void> callback);
 }

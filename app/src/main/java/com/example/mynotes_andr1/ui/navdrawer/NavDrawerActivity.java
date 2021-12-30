@@ -46,8 +46,8 @@ public class NavDrawerActivity extends AppCompatActivity implements NavDrawerHos
     private FragmentContainerView detailsView;
 
     private NotesTab selectedTab = NotesTab.DEFAULT;
-    private NoteFolder selectedFolder;
-    private Note selectedNote;
+    private NoteFolder selectedFolder = null;
+    private Note selectedNote = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +138,7 @@ public class NavDrawerActivity extends AppCompatActivity implements NavDrawerHos
                             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
                                 Note note = result.getParcelable(NotesFragment.ARG_NOTE);
                                 if (note != null) {
+                                    selectedFolder = result.getParcelable(NotesFragment.ARG_FOLDER);
                                     showNote(note);
                                 }
                             }
@@ -194,6 +195,7 @@ public class NavDrawerActivity extends AppCompatActivity implements NavDrawerHos
     }
 
     void showFoldersList() {
+        selectedNote = null;
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
                 .replace(R.id.feature_container, new NoteFoldersFragment(), NoteFoldersFragment.TAG);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -207,7 +209,7 @@ public class NavDrawerActivity extends AppCompatActivity implements NavDrawerHos
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
                 .replace(R.id.feature_container, NotesFragment.newInstance(selectedFolder), NotesFragment.TAG);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            //transaction.replace(R.id.details_container, new NoteDetailsFragment(), NoteDetailsFragment.TAG);
+            transaction.replace(R.id.details_container, EditNoteFragment.newInstance(selectedNote, selectedFolder), EditNoteFragment.TAG);
             detailsView.setVisibility(View.VISIBLE);
         }
         if (selectedFolder != null) {
@@ -221,13 +223,14 @@ public class NavDrawerActivity extends AppCompatActivity implements NavDrawerHos
         selectedNote = note;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.feature_container, EditNoteFragment.newInstance(selectedNote), EditNoteFragment.TAG)
+                    .replace(R.id.feature_container, EditNoteFragment.newInstance(selectedNote, selectedFolder), EditNoteFragment.TAG)
                     .addToBackStack(null)
                     .commit();
         }
         else {
             Bundle bundle = new Bundle();
             bundle.putParcelable(EditNoteFragment.ARG_NOTE, selectedNote);
+            bundle.putParcelable(EditNoteFragment.ARG_FOLDER, selectedFolder);
             getSupportFragmentManager()
                     .setFragmentResult(EditNoteFragment.KEY_RESULT, bundle);
         }

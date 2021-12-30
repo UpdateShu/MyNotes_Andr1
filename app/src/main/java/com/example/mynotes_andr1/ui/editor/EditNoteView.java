@@ -18,6 +18,8 @@ public interface EditNoteView {
 
     void setName(String name);
 
+    void setLink(String link);
+
     void setDescription(String description);
 
     void setCreated(Date created);

@@ -7,4 +7,5 @@
     <dimen name="details_padding">15dp</dimen>
     <dimen name="tools_margin">20dp</dimen>
     <dimen name="editor_textSize">20sp</dimen>
+    <dimen name="editor_height">380dp</dimen>
 </resources>
