@@ -1,5 +1,6 @@
 package com.example.mynotes_andr1.ui.folders;
 
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,7 +31,9 @@ import com.example.mynotes_andr1.ui.adapters.AdapterItem;
 import com.example.mynotes_andr1.ui.adapters.NoteFolderAdapterItem;
 import com.example.mynotes_andr1.ui.adapters.NoteFoldersAdapter;
 import com.example.mynotes_andr1.ui.adapters.NotesAdapter;
+import com.example.mynotes_andr1.ui.navdrawer.BaseAlertDialogFragment;
 import com.example.mynotes_andr1.ui.navdrawer.BaseNavFeatureFragment;
+import com.example.mynotes_andr1.ui.notes.NoteDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -115,6 +119,19 @@ public class NoteFoldersFragment extends BaseNavFeatureFragment implements NoteF
                 presenter.onNoteFolderAdded(folder);
             }
         });
+        getParentFragmentManager().setFragmentResultListener(NoteFolderDialogFragment.newInstance().getKeyResult(), requireActivity(),
+                new FragmentResultListener() {
+                    @Override
+                    public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                        switch (result.getInt(NoteFolderDialogFragment.ARG_BUTTON)) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                presenter.removeNoteFolder(selectedFolder);
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+                    }
+                });
         presenter.refresh();
     }
 
@@ -185,9 +202,12 @@ public class NoteFoldersFragment extends BaseNavFeatureFragment implements NoteF
             return true;
         }
         if (item.getItemId() == R.id.action_delete) {
-            //String message = getString(R.string.delete_note) + "'" + note.getName() + "'?";
-            //NoteDialogFragment dialog = NoteDialogFragment.newInstance(getResources(), note.getName());
-            //dialog.show(getParentFragmentManager(), dialog.getDialogTag());
+            if (selectedFolder != null) {
+                //проверка на список заметок
+                NoteFolderDialogFragment dialog = NoteFolderDialogFragment.newInstance(getResources(), selectedFolder.getName());
+                dialog.show(getParentFragmentManager(), dialog.getDialogTag());
+            }
+            return true;
         }
         return super.onContextItemSelected(item);
     }

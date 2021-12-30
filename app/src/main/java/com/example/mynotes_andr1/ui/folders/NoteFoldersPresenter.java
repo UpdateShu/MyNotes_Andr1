@@ -59,4 +59,23 @@ public class NoteFoldersPresenter {
         view.onNoteFolderAdded(adapterItem);
         view.hideEmpty();
     }
+
+    public void removeNoteFolder(NoteFolder selectedFolder) {
+
+        view.showProgress();
+
+        repository.deleteFolder(selectedFolder, new CallBack<Void>() {
+            @Override
+            public void onSuccess(Void result) {
+                view.hideProgress();
+                view.onNoteFolderRemoved(selectedFolder);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                view.hideProgress();
+            }
+        });
+    }
+
 }

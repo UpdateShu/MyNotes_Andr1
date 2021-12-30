@@ -16,13 +16,16 @@ public class Note implements Parcelable {
 
     private String name;
 
+    private String link;
+
     private String description;
 
     private Date created;
 
-    public Note(String id, String name, String description, Date created) {
+    public Note(String id, String name, String link, String description, Date created) {
         this.id = id;
         this.name = name;
+        this.link = link;
         this.description = description;
         this.created = created;
     }
@@ -30,6 +33,7 @@ public class Note implements Parcelable {
     protected Note(Parcel in) {
         id = in.readString();
         name = in.readString();
+        link = in.readString();
         description = in.readString();
         created = new Date();
         try {
@@ -62,6 +66,14 @@ public class Note implements Parcelable {
         this.name = name;
     }
 
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -92,6 +104,7 @@ public class Note implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeString(name);
+        dest.writeString(link);
         dest.writeString(description);
         dest.writeString(new SimpleDateFormat().format(created));
     }

@@ -77,6 +77,10 @@ public class NotesPresenter {
         }
     }
 
+    public NoteFolder getCurrentFolder() {
+        return currentFolder;
+    }
+
     void loadFolder(NoteFolder folder) {
         repository.loadNoteFolder(folder, new CallBack<Void>() {
             @Override

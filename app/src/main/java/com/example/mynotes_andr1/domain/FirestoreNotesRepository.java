@@ -20,9 +20,10 @@ public class FirestoreNotesRepository implements NotesRepository {
     public static final NotesRepository INSTANCE = new FirestoreNotesRepository();
 
     private static final String KEY_FOLDER_NAME = "name";
+    private static final String KEY_NOTE_FOLDER_ID = "folder_ID";
     private static final String KEY_NOTE_NAME = "name";
-    private static final String KEY_NOTE_DESCRIPTION = "description";
     private static final String KEY_NOTE_LINK = "link";
+    private static final String KEY_NOTE_DESCRIPTION = "description";
     private static final String KEY_NOTE_CREATED = "created";
 
     private static final String FOLDERS = "folders";
@@ -83,13 +84,28 @@ public class FirestoreNotesRepository implements NotesRepository {
 
     @Override
     public void deleteFolder(NoteFolder folder, CallBack<Void> callBack) {
-
+        db.collection(FOLDERS)
+                .document(folder.getId())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        callBack.onSuccess(unused);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callBack.onError(e);
+                    }
+                });
     }
 
     @Override
     public void loadNoteFolder(NoteFolder folder, CallBack<Void> callBack) {
 
         db.collection(NOTES)
+                .whereEqualTo(KEY_NOTE_FOLDER_ID, folder.getId())
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -104,7 +120,7 @@ public class FirestoreNotesRepository implements NotesRepository {
                             String description = snapshot.getString(KEY_NOTE_DESCRIPTION);
                             String link = snapshot.getString(KEY_NOTE_LINK);
                             Date created = snapshot.getDate(KEY_NOTE_CREATED);
-                            result.add(new Note(id, name, description, created));
+                            result.add(new Note(id, name, link, description, created));
                         }
                         folder.setNotes(result);
                         callBack.onSuccess(null);
@@ -119,11 +135,13 @@ public class FirestoreNotesRepository implements NotesRepository {
     }
 
     @Override
-    public void addNote(String name, String description, Date date, CallBack<Note> callBack) {
+    public void addNote(NoteFolder folder, String name, String link, String description, Date date, CallBack<Note> callBack) {
         Map<String, Object> data = new HashMap<>();
 
         Date createdAt = new Date();
+        data.put(KEY_NOTE_FOLDER_ID, folder.getId());
         data.put(KEY_NOTE_NAME, name);
+        data.put(KEY_NOTE_LINK, link);
         data.put(KEY_NOTE_DESCRIPTION, description);
         data.put(KEY_NOTE_CREATED, createdAt);
 
@@ -133,7 +151,7 @@ public class FirestoreNotesRepository implements NotesRepository {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         String id = documentReference.getId();
-                        callBack.onSuccess(new Note(id, name, description, createdAt));
+                        callBack.onSuccess(new Note(id, name, link, description, createdAt));
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -145,10 +163,12 @@ public class FirestoreNotesRepository implements NotesRepository {
     }
 
     @Override
-    public void updateNote(Note note, String name, String description, Date date, CallBack<Note> callBack) {
+    public void updateNote(Note note, NoteFolder folder, String name, String link, String description, Date created, CallBack<Note> callBack) {
         Map<String, Object> data = new HashMap<>();
 
+        data.put(KEY_NOTE_FOLDER_ID, folder.getId());
         data.put(KEY_NOTE_NAME, name);
+        data.put(KEY_NOTE_LINK, link);
         data.put(KEY_NOTE_DESCRIPTION, description);
         data.put(KEY_NOTE_CREATED, note.getCreated());
 
@@ -159,7 +179,9 @@ public class FirestoreNotesRepository implements NotesRepository {
                     @Override
                     public void onSuccess(Void unused) {
                         note.setName(name);
+                        note.setLink(link);
                         note.setDescription(description);
+                        note.setCreated(created);
                         callBack.onSuccess(note);
                     }
                 })

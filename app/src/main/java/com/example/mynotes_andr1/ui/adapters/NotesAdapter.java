@@ -42,19 +42,12 @@ public class NotesAdapter extends ListAdapter {
             card.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    card.showContextMenu();
                     AdapterItem item = data.get(getAdapterPosition());
                     if (item instanceof NoteAdapterItem) {
                         if (getOnClick() != null) {                            //getOnClick().onLongClick(((NoteAdapterItem)item).getNote());
                             getOnClick().onClick(((NoteAdapterItem)item).getNote());
                         }
                     }
-                    /*AdapterItem item = data.get(getAdapterPosition());
-                    if (item instanceof NoteAdapterItem) {
-                        if (getOnClick() != null) {
-                            getOnClick().onClick(((NoteAdapterItem)item).getNote());
-                        }
-                    }*/
                 }
             });
             card.setOnLongClickListener(new View.OnLongClickListener() {

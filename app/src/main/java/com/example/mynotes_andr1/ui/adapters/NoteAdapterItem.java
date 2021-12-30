@@ -8,6 +8,7 @@ public class NoteAdapterItem implements AdapterItem {
     private Note note;
 
     private String title;
+    private String link;
     private String message;
     private String time;
 

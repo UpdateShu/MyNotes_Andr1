@@ -1,13 +1,25 @@
 package com.example.mynotes_andr1.ui.editor;
 
+import static android.content.Context.CLIPBOARD_SERVICE;
+
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -17,32 +29,37 @@ import androidx.fragment.app.FragmentResultListener;
 
 import com.example.mynotes_andr1.R;
 import com.example.mynotes_andr1.domain.FirestoreNotesRepository;
-import com.example.mynotes_andr1.domain.InMemoryNotesRepository;
 import com.example.mynotes_andr1.domain.Note;
+import com.example.mynotes_andr1.domain.NoteFolder;
+import com.example.mynotes_andr1.ui.notes.NoteDialogFragment;
 import com.example.mynotes_andr1.ui.notes.NotesFragment;
 import com.example.mynotes_andr1.ui.navdrawer.BaseNavFeatureFragment;
 
 public class EditNoteFragment extends BaseNavFeatureFragment implements EditNoteView {
 
     public static final String ARG_NOTE = "ARG_NOTE";
+    public static final String ARG_FOLDER = "ARG_FOLDER";
     public static final String KEY_RESULT = "NoteDetailsFragment_KEY_RESULT";
     public static final String TAG = "NoteDetailsFragment";
 
     private Button btnSave;
+    private Button btnLink;
     private ProgressBar progressBar;
 
+    private LinearLayout editor;
     private EditText noteName;
     private EditText noteLink;
     private EditText noteDescription;
     private DatePicker noteCreated;
 
-    private NotePresenter presenter;
+    private EditNotePresenter presenter;
 
-    public static EditNoteFragment newInstance(Note note) {
+    public static EditNoteFragment newInstance(Note note, NoteFolder folder) {
         EditNoteFragment fragment = new EditNoteFragment();
 
         Bundle args = new Bundle();
         args.putParcelable(ARG_NOTE, note);
+        args.putParcelable(ARG_FOLDER, folder);
         fragment.setArguments(args);
         return fragment;
     }
@@ -64,17 +81,31 @@ public class EditNoteFragment extends BaseNavFeatureFragment implements EditNote
 
         progressBar = view.findViewById(R.id.progress);
         btnSave = view.findViewById(R.id.btn_save);
+        btnLink = view.findViewById(R.id.btn_link);
 
         noteName = view.findViewById(R.id.note_name);
-        noteDescription = view.findViewById(R.id.note_description);
         noteLink = view.findViewById(R.id.note_link);
+        noteDescription = view.findViewById(R.id.note_description);
         noteCreated = view.findViewById(R.id.note_created);
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Date created = getDateFromDatePicker();
-                presenter.onActionPressed(noteName.getText().toString(), noteDescription.getText().toString(), created);
+                presenter.onActionPressed(noteName.getText().toString(),
+                        noteLink.getText().toString(), noteDescription.getText().toString(), created);
+            }
+        });
+        btnLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(noteLink.getText().toString()));
+                    startActivity(browserIntent);
+                }
+                catch (Exception ex) {
+                    Toast.makeText(requireContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -91,23 +122,26 @@ public class EditNoteFragment extends BaseNavFeatureFragment implements EditNote
         if (getArguments() != null && getArguments().containsKey(ARG_NOTE)) {
             note = requireArguments().getParcelable(ARG_NOTE);
         }
-        showNote(note);
+        NoteFolder folder = null;
+        if (getArguments() != null && getArguments().containsKey(ARG_FOLDER)) {
+            folder = requireArguments().getParcelable(ARG_FOLDER);
+        }
+        showNote(note, folder);
         getParentFragmentManager()
                 .setFragmentResultListener(KEY_RESULT, getViewLifecycleOwner(), new FragmentResultListener() {
                     @Override
                     public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                        showNote(result.getParcelable(NotesFragment.ARG_NOTE));
+                        showNote(result.getParcelable(NotesFragment.ARG_NOTE), result.getParcelable(NotesFragment.ARG_FOLDER));
                     }
                 });
-
     }
 
-    void showNote(Note note) {
+    void showNote(Note note, NoteFolder folder) {
         if (note != null) {
-            presenter = new UpdateNotePresenter(note,this, FirestoreNotesRepository.INSTANCE);
+            presenter = new UpdateNotePresenter(note, folder,this, FirestoreNotesRepository.INSTANCE);
         }
         else {
-            presenter = new AddNotePresenter(this, FirestoreNotesRepository.INSTANCE);
+            presenter = new AddNotePresenter(folder, this, FirestoreNotesRepository.INSTANCE);
         }
     }
 
@@ -136,6 +170,11 @@ public class EditNoteFragment extends BaseNavFeatureFragment implements EditNote
     @Override
     public void setName(String name) {
         noteName.setText(name);
+    }
+
+    @Override
+    public void setLink(String link) {
+        noteLink.setText(link);
     }
 
     @Override
